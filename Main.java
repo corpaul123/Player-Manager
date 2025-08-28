@@ -7,7 +7,7 @@ public class Main{
 
     int ini = enemyInit;
     for(int i = 0; i < enemyCount; i++){
-      initiative.put("enemy" + i, ini);
+      initiative.put("enemy" + (i + 1), ini);
     }
 
     sort(initiative);
@@ -25,7 +25,7 @@ public class Main{
   public static HashMap<String, Integer> EnterInfo(int entCount){
     HashMap<String, Integer> ents = new HashMap<String, Integer>();
     int cont = entCount;
-    try (Scanner scan = new Scanner(System.in)) {
+    Scanner scan = new Scanner(System.in);
       while(cont > 0){
 
         System.out.println("input name and initiative:" );
@@ -43,11 +43,9 @@ public class Main{
         }
 
       }
-    }
     return ents;
+
   }
-
-
 
 
 
