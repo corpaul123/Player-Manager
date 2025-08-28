@@ -25,25 +25,25 @@ public class Main{
   public static HashMap<String, Integer> EnterInfo(int entCount){
     HashMap<String, Integer> ents = new HashMap<String, Integer>();
     int cont = entCount;
-    Scanner scan = new Scanner(System.in);
-    while(cont > 0){
+    try (Scanner scan = new Scanner(System.in)) {
+      while(cont > 0){
 
-      System.out.println("input name and initiative:" );
-      String name = scan.nextLine();
-      int init = scan.nextInt();
-      scan.nextLine();
-      //System.out.println("name: " + name + " initiative: " + init);
-      if(init > 0 && init <= 40){
-        ents.put(name, init);
-        cont--;
-      }
-      else{
-        System.out.println("Invalid initiative, must be between 0 and 40");
-        continue;
-      }
+        System.out.println("input name and initiative:" );
+        String name = scan.nextLine();
+        int init = scan.nextInt();
+        scan.nextLine();
+        //System.out.println("name: " + name + " initiative: " + init);
+        if(init > 0 && init <= 40){
+          ents.put(name, init);
+          cont--;
+        }
+        else{
+          System.out.println("Invalid initiative, must be between 0 and 40");
+          continue;
+        }
 
+      }
     }
-
     return ents;
   }
 
