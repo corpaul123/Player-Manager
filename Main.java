@@ -1,5 +1,5 @@
 import java.util.*;
-import java.lang.*;
+
 
 public class Main{
 
@@ -7,7 +7,7 @@ public class Main{
 
     int ini = enemyInit;
     for(int i = 0; i < enemyCount; i++){
-      initiative.put("enemy" + i, enemyInit);
+      initiative.put("enemy" + i, ini);
     }
 
     sort(initiative);
@@ -25,10 +25,10 @@ public class Main{
   public static HashMap<String, Integer> EnterInfo(int entCount){
     HashMap<String, Integer> ents = new HashMap<String, Integer>();
     int cont = entCount;
+    Scanner scan = new Scanner(System.in);
     while(cont > 0){
 
       System.out.println("input name and initiative:" );
-      Scanner scan = new Scanner(System.in);
       String name = scan.nextLine();
       int init = scan.nextInt();
       scan.nextLine();
@@ -43,7 +43,6 @@ public class Main{
       }
 
     }
-
 
     return ents;
   }
