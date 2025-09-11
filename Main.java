@@ -5,98 +5,122 @@ public class Main{
 
   static final int MAX_INIT = 40;
 
+  // main area-----------------------------------------------------------------------------------------------------
   public static void main(String[] args) {
     //create hashmap
-    HashMap<String, Integer> initiative = new HashMap<String, Integer>();
+    List<Entity> ents = new ArrayList<>();
     //initialize scanner
     System.out.println("---------------------------------------");
     Scanner scanner = new Scanner(System.in);
     //get initial player count
-    System.out.print("Enter number of entities (all enemies will be a single entity): ");
+    System.out.print("Enter number of players: ");
     int entCount = scanner.nextInt();
     scanner.nextLine();
-    initiative = enterPlayerInfo(entCount, scanner);
+    ents = enterPlayerInfo(entCount, scanner);
 
-    checkEnemy(scanner, initiative);
+    checkEnemy(scanner, ents);
+
+    sortInit(ents);
 
     //close the scanner
     scanner.close();
 
   }
 
+  //add players------------------------------------------------------------------------------------------------------------
+
+  public static void addEntity(String name, int initiative, List<Entity> list){
+    list.add(new Entity(name, initiative));
+  }
+
+  public static void addEntity(String name, int initiative, int hitP, List<Entity> list){
+    list.add(new Entity(name, initiative, hitP));
+  }
 
 
 
+//check if enemies will be added---------------------------------------------------------------------------------------
+  public static void checkEnemy(Scanner scan, List<Entity> list){
 
-  public static void addEntity(String name, int initiative, HashMap<String, Integer> map){
-    map.put(name, initiative);
+      while(true){
+        System.out.println("Are there enemies in this encounter? Y/N ");
+        char enc = scan.next().toUpperCase().charAt(0);
+        scan.nextLine();
+        if(enc == 'Y'){
+          addEnemy(scan, list);
+          break;
+        }else if(enc == 'N'){
+          break;
+        }else if(enc != 'Y' && enc != 'N'){
+          System.out.println("Invalid input");
+        }
+   
+      }
   }
 
 
 
 
-  public static void checkEnemy(Scanner scan, HashMap<String, Integer> map){
-    boolean enem = false;
-    int check = 0;
-    while(check == 0){
-      System.out.println("Are there enemies in this encounter? Y/N ");
-      char enc = scan.next().charAt(0);
+
+
+//add Enemies-----------------------------------------------------------------------------------------------------
+
+  public static void addEnemy(Scanner scan, List<Entity> list){
+    int enemyInit, enemyCount, hitP;
+
+    while(true){
+      System.out.println("add enemy amount and initiative (eg. 2 14): ");
+      enemyCount = scan.nextInt();
+      enemyInit = scan.nextInt();
       scan.nextLine();
-      if(enc == 'Y'){
-        enem = true;
-        check = 1;
-      }
-      else if(enc == 'N'){
-        enem = false;
-        check = 1;
+
+      if((enemyInit > MAX_INIT || enemyInit < 0) || (enemyCount <= 0 || enemyCount > 40)){
+        System.out.println("Invalid input, please re-enter");
 
       }
       else{
-        System.out.println("Unable to use input");
-      }
-    }
 
-    if(enem == true){
-      int enemCheck = 1;
-      int enemyCount = 0;
-      int enemyInit = 0;
-      while(enemCheck == 1){
-          
-        System.out.println("add enemy amount and initiative: ");
-        enemyCount = scan.nextInt();
-        scan.nextLine();
-        enemyInit = scan.nextInt();
-        scan.nextLine();
-        if((enemyCount > 0 && enemyInit > 0) && enemyInit <= 40){
-          enemCheck = 0;
-        }
+        break;
+
+      }
+
+    }
+    while(true){
+      System.out.println("Will every enemy have their own HP? Y/N: ");
+      char response = scan.next().toUpperCase().charAt(0);
+      scan.nextLine();
+        if(response == 'Y'){
+          for(int i = 0; i < enemyCount; i++){
+            System.out.println("Enter HP for enemy " + (i + 1) + ": ");
+            hitP = scan.nextInt();
+            scan.nextLine();
+            String name = "Enemy" + (i + 1);
+            addEntity(name, enemyInit, hitP, list);
+          }
+          break;
+        }else if(response == 'N'){
+          System.out.println("Enter Hp for all enemies: ");
+          hitP = scan.nextInt();
+          scan.nextLine();
+          for(int i = 0; i < enemyCount; i++){
+            String name = "Enemy" + (i + 1);
+            addEntity(name, enemyInit, hitP, list);  
+          }
+          break;
+          }
         else{
-          System.out.println("Inivalid enemy information, please re-enter");
+          System.out.println("Invalid input");
         }
-      }
-      addEnemy(enemyInit,enemyCount, map);
 
+        sortInit(list);
+        
+  
     }
-    else{
-      sortInit(map);
-    }
+
+
   }
 
 
-
-
-
-  public static void addEnemy(int enemyInit, int enemyCount, HashMap<String, Integer> initiative){
-
-    int ini = enemyInit;
-    for(int i = 0; i < enemyCount; i++){
-      String enemyName = "enemy" + (i + 1);
-      addEntity(enemyName, ini, initiative);
-    }
-
-    sortInit(initiative);
-
-  }
 
 
 
@@ -104,13 +128,14 @@ public class Main{
 
 
   //repeat for number of entities to retrieve names and initiative rolls
-  public static HashMap<String, Integer> enterPlayerInfo(int entCount, Scanner scan){
-    HashMap<String, Integer> ents = new HashMap<String, Integer>();
+  public static List<Entity> enterPlayerInfo(int entCount, Scanner scan){
+    List<Entity> ents = new ArrayList<>();
     int cont = entCount;
       while(cont > 0){
         System.out.println("input name and initiative:" );
         String name = scan.nextLine();
-        if(ents.containsKey(name)){
+        boolean exist = ents.stream().anyMatch(e -> e.getName().equalsIgnoreCase(name));
+        if(exist){
           System.out.println("Player has already been entered, please enter a different one.");
           continue;
         }
@@ -135,17 +160,17 @@ public class Main{
 
 
   //method sorts the map
-  public static List<Map.Entry<String, Integer>> sortInit(HashMap<String, Integer> map){
-    List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>> (map.entrySet());
-    list.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+  public static List<Entity> sortInit(List<Entity> list){
+    //List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>> (map.entrySet());
+    list.sort((e1, e2) -> Integer.compare(e2.getInit(), e1.getInit()));
 
     if(list.isEmpty()){
       return null;
     }
 
     System.out.println("/-----------------Current Order--------------------/");
-    for (Map.Entry<String, Integer> entry : list){
-      System.out.println(entry.getKey() + " " + entry.getValue());
+    for (Entity entry : list){
+      System.out.println(entry.toString());
     }
 
 
@@ -153,19 +178,18 @@ public class Main{
 
   }
 
-  public static void sortRotate(List<Map.Entry<String, Integer>> list){
+  public static void sortRotate(List<Entity> list){
     
-    if(list.isEmpty() || list == null ){
+    if( list == null || list.isEmpty()){
       System.out.println("no initiative");
     }
-
-    Map.Entry<String, Integer> first = list.remove(0);
+      Entity first = list.remove(0);
       list.add(first);
 
 
     System.out.println("/-----------------Current Order--------------------/");
-    for (Map.Entry<String, Integer> entry : list){
-      System.out.println(entry.getKey() + " " + entry.getValue());
+    for (Entity entry : list){
+      System.out.println(entry.toString());
     }
   }
 
