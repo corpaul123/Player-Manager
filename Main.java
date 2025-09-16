@@ -21,6 +21,7 @@ public class Main{
     checkEnemy(scanner, ents);
 
     sortInit(ents);
+    runEncounter(ents, scanner);
 
     //close the scanner
     scanner.close();
@@ -191,6 +192,54 @@ public class Main{
     for (Entity entry : list){
       System.out.println(entry.toString());
     }
+  }
+
+  public static void runEncounter(List<Entity> list, Scanner scan){
+
+    int count = 1;
+  while(count == 1){
+    System.out.println("Actions(end encoutner: 1, remove enemy health: 2, no action: 0)");
+    int response = scan.nextInt();
+    scan.nextLine();
+
+    if(response == 1 || response == 2 || response == 0 ){
+        if(response == 1){
+          System.out.println("Ending Encounter");
+          count = 0;
+        }
+        else if (response == 2) {
+            System.out.println("Enter enemy and amount of damage");
+            String enem = scan.nextLine();
+            int damage = scan.nextInt();
+            scan.nextLine();
+            Optional<Entity> enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
+            if(enemOpt.isPresent()){
+              Entity enemy = enemOpt.get();
+              enemy.takeDamage(damage);
+
+              if(enemy.getHP() <= 0){
+                list.remove(enemy);
+                System.out.println(enemy + " has been defeated");
+              }
+              
+            }else{
+              System.out.println("Invalid enemy name");
+            }
+
+            sortRotate(list);
+        }
+        else if(response == 0){
+          System.out.println("No Action");
+          sortRotate(list);
+        }
+        else{
+          System.out.println("Invalid response, must be 1, 2, or 0");
+        }
+      
+
+    }
+  }
+
   }
 
 

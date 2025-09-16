@@ -19,6 +19,17 @@ public class Entity {
         return init;
     }
 
+    public void setHP(int hitPoints){
+        this.hitP = hitPoints;
+    }
+    
+    public void takeDamage(int damage){
+        this.hitP -= damage;
+        if(this.hitP <= 0){
+            this.hitP = 0;
+        }
+    }
+
     public String getName(){
         return name;
     }
