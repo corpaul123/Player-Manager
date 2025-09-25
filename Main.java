@@ -1,18 +1,18 @@
 import java.util.*;
 
-
 public class Main{
 
+// Define static variables 
   static final int MAX_INIT = 40;
+  static int ENEMY_COUNT = 1;
 
-  // main area-----------------------------------------------------------------------------------------------------
+/** 
+* Entry Point: manage input, setup, and run the encounter loop. 
+**/
   public static void main(String[] args) {
-    //create hashmap
     List<Entity> ents = new ArrayList<>();
-    //initialize scanner
     System.out.println("---------------------------------------");
     Scanner scanner = new Scanner(System.in);
-    //get initial player count
     System.out.print("Enter number of players: ");
     int entCount = scanner.nextInt();
     scanner.nextLine();
@@ -22,13 +22,11 @@ public class Main{
 
     sortInit(ents);
     runEncounter(ents, scanner);
-
-    //close the scanner
     scanner.close();
 
   }
 
-  //add players------------------------------------------------------------------------------------------------------------
+
 
   public static void addEntity(String name, int initiative, List<Entity> list){
     list.add(new Entity(name, initiative));
@@ -40,7 +38,7 @@ public class Main{
 
 
 
-//check if enemies will be added---------------------------------------------------------------------------------------
+// Prompt user whether enemies will be part of the encounter. 
   public static void checkEnemy(Scanner scan, List<Entity> list){
 
       while(true){
@@ -64,13 +62,17 @@ public class Main{
 
 
 
-//add Enemies-----------------------------------------------------------------------------------------------------
-
+/**  
+* Prompt user to input enemy amount and initiative.
+* Prompt user to define whether enemies will have individually-defined hit points or all use the same max hit points. 
+* @param scan Scanner instance for input
+* @param list a list of initialized entities
+*/
   public static void addEnemy(Scanner scan, List<Entity> list){
     int enemyInit, enemyCount, hitP;
 
     while(true){
-      System.out.println("add enemy amount and initiative (eg. 2 14): ");
+      System.out.println("add enemy amount and initiative (eg. 2, 14): ");
       enemyCount = scan.nextInt();
       enemyInit = scan.nextInt();
       scan.nextLine();
@@ -95,7 +97,7 @@ public class Main{
             System.out.println("Enter HP for enemy " + (i + 1) + ": ");
             hitP = scan.nextInt();
             scan.nextLine();
-            String name = "Enemy" + (i + 1);
+            String name = "Enemy" + ENEMY_COUNT++;
             addEntity(name, enemyInit, hitP, list);
           }
           break;
@@ -104,7 +106,7 @@ public class Main{
           hitP = scan.nextInt();
           scan.nextLine();
           for(int i = 0; i < enemyCount; i++){
-            String name = "Enemy" + (i + 1);
+            String name = "Enemy" + ENEMY_COUNT++;
             addEntity(name, enemyInit, hitP, list);  
           }
           break;
@@ -128,7 +130,7 @@ public class Main{
 
 
 
-  //repeat for number of entities to retrieve names and initiative rolls
+// Prompt user for player name and initiative.  
   public static List<Entity> enterPlayerInfo(int entCount, Scanner scan){
     List<Entity> ents = new ArrayList<>();
     int cont = entCount;
@@ -142,7 +144,6 @@ public class Main{
         }
         int init = scan.nextInt();
         scan.nextLine();
-        //System.out.println("name: " + name + " initiative: " + init);
         if(init > 0 && init <= MAX_INIT){
           addEntity(name, init, ents);
           cont--;
@@ -160,9 +161,8 @@ public class Main{
 
 
 
-  //method sorts the map
+// Sort the list in descending order. 
   public static List<Entity> sortInit(List<Entity> list){
-    //List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>> (map.entrySet());
     list.sort((e1, e2) -> Integer.compare(e2.getInit(), e1.getInit()));
 
     if(list.isEmpty()){
@@ -179,30 +179,49 @@ public class Main{
 
   }
 
-  public static void sortRotate(List<Entity> list){
-    
-    if( list == null || list.isEmpty()){
-      System.out.println("no initiative");
-    }
-      Entity first = list.remove(0);
-      list.add(first);
-
-
+// Print the current initiative order in a unified format.  
+  public static void printOrder(List<Entity> list){
     System.out.println("/-----------------Current Order--------------------/");
     for (Entity entry : list){
       System.out.println(entry.toString());
     }
   }
 
+// Rotate the initiative order to the current entity taking action.  
+  public static void sortRotate(List<Entity> list){
+    
+    if( list == null || list.isEmpty()){
+      System.out.println("no initiative");
+      return;
+    }
+      Entity first = list.remove(0);
+      list.add(first);
+
+    printOrder(list);
+  }
+
+/** 
+* Allow user to define operations during each round.
+* User is able to end the encounter manually, allowing encounters to continue or end based on more dynamic factors.
+* User can remove health from a specific enemy, which will remove enemy from encounter when they are defeated.
+* User can add more enemies to encounter, allowing encounters to be more dynamic.
+* User can continue encounter without action. 
+* @param list a list of initialized entities
+* @param scan Scanner instance for input
+ **/
   public static void runEncounter(List<Entity> list, Scanner scan){
 
     int count = 1;
   while(count == 1){
-    System.out.println("Actions(end encoutner: 1, remove enemy health: 2, no action: 0)");
+    System.out.println("Actions: ");
+    System.out.println("End encounter: 1");
+    System.out.println("Remove enemy health: 2");
+    System.out.println("Add more enemies: 3");
+    System.out.println("No action: 0");
     int response = scan.nextInt();
     scan.nextLine();
 
-    if(response == 1 || response == 2 || response == 0 ){
+    if(response == 1 || response == 2 || response == 3 || response == 0 ){
         if(response == 1){
           System.out.println("Ending Encounter");
           count = 0;
@@ -221,12 +240,18 @@ public class Main{
                 list.remove(enemy);
                 System.out.println(enemy + " has been defeated");
               }
+            printOrder(list);
               
             }else{
               System.out.println("Invalid enemy name");
             }
 
             sortRotate(list);
+        }
+        else if(response == 3){
+          addEnemy(scan, list);
+
+          printOrder(list);
         }
         else if(response == 0){
           System.out.println("No Action");
