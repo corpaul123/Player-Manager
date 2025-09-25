@@ -41,10 +41,12 @@ public class Entity {
     public String toString(){
 
         if(hitP != null){
-            return name + " | init: " + init + " | HP: " + hitP;
+            return String.format("%-12s  | init: %3d | HP: %3d ", name, init, hitP);
+            //return name + " | init: " + init + " | HP: " + hitP;
         }
         else{
-            return name + " | init: " + init;
+            //return name + " | init: " + init;
+            return String.format("%-12s  | init: %3d ", name, init);
         }
     }
 }
