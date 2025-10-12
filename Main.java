@@ -216,12 +216,13 @@ public class Main{
     System.out.println("Actions: ");
     System.out.println("End encounter: 1");
     System.out.println("Remove enemy health: 2");
+    System.out.println("Increase enemy health: 4");
     System.out.println("Add more enemies: 3");
     System.out.println("No action: 0");
     int response = scan.nextInt();
     scan.nextLine();
 
-    if(response == 1 || response == 2 || response == 3 || response == 0 ){
+    if(response == 1 || response == 2 || response == 3 || response == 4 || response == 0 ){
         if(response == 1){
           System.out.println("Ending Encounter");
           count = 0;
@@ -245,13 +246,27 @@ public class Main{
             }else{
               System.out.println("Invalid enemy name");
             }
-
-            sortRotate(list);
         }
         else if(response == 3){
           addEnemy(scan, list);
 
           printOrder(list);
+        }
+        else if(response == 4){
+          System.out.println("Enter enemy and amount of increased health");
+          String enem = scan.nextLine();
+          int health = scan.nextInt();
+          scan.nextLine();
+          Optional<Entity> enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
+          if(enemOpt.isPresent()){
+            Entity enemy = enemOpt.get();
+            enemy.moreHealth(health);
+            printOrder(list);
+              
+            }else{
+              System.out.println("Invalid enemy name");
+            }
+
         }
         else if(response == 0){
           System.out.println("No Action");
