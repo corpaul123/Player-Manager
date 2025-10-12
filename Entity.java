@@ -30,6 +30,10 @@ public class Entity {
         }
     }
 
+    public void moreHealth(int health){
+        this.hitP += health;
+    }
+
     public String getName(){
         return name;
     }
