@@ -2,6 +2,7 @@ public class Entity {
     private int init;
     private String name;
     private Integer hitP;
+    private Integer maxHP;
 
     public Entity(String name, int initiative){
         this.name = name;
@@ -13,6 +14,7 @@ public class Entity {
         this.name = name;
         this.init = initiative;
         this.hitP = hitPoints;
+        this.maxHP = hitPoints;
     }
 
     public int getInit(){
@@ -31,7 +33,13 @@ public class Entity {
     }
 
     public void moreHealth(int health){
-        this.hitP += health;
+        if(this.hitP < maxHP){
+            if((this.hitP + health) <= maxHP){
+                this.hitP += health;
+            }
+        }
+
+        
     }
 
     public String getName(){
