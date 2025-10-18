@@ -205,6 +205,7 @@ public class Main{
 * User is able to end the encounter manually, allowing encounters to continue or end based on more dynamic factors.
 * User can remove health from a specific enemy, which will remove enemy from encounter when they are defeated.
 * User can add more enemies to encounter, allowing encounters to be more dynamic.
+* User can add more health to enemies, allowing them to heal.
 * User can continue encounter without action. 
 * @param list a list of initialized entities
 * @param scan Scanner instance for input
