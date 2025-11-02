@@ -20,7 +20,8 @@ java -cp src Main
     a. No - start encounter
     b. Yes,
         1. enter enemy amount and their initiative
-        2. Choose whether enemies have individually specified health range or not
+        2. If there is only one enemy, you will be asked whether to give it a custom name
+        3. Choose whether enemies have individually specified health range or not
         a. No-enter health once.
         b. Yes-enter health for each enemy
 4. Encounter is run, choose action.
@@ -32,6 +33,7 @@ java -cp src Main
 ## Features
 - **Variable Player Entry:** Add variable amount of unique player names and their initiative rolls to encounters
 - **Automatic Sorting of Initiative:** Sort players and enemies in descending order based on their initiative rolls
+- **Single or Multiple Enemy Handling:** Supports individual naming and HP tracking for single enemies
 - **Dynamic Enemy Entry:** Allows for the user to pick whether encounter has enemies present or not, then specify amount
 - **Enemy Integration:** Enemies are automatically integrated into initiative order
 - **Automatic Rotation:** Initiative is rotated based on current action entity

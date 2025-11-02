@@ -59,7 +59,45 @@ public class Main{
 
 
 
+/**
+ * Enter unique name of enemy and HP
+* @param scan Scanner instance for input
+* @param list a list of initialized entities
+* @param int enemy initiative for sorting
+ */
 
+  public static void nameEnemy(Scanner scan, List<Entity> list, int enemyInit){
+    int hitP;
+    String name;
+    System.out.println("Would you like to name this enemy (Y/N)? ");
+    char response = scan.next().toUpperCase().charAt(0);
+    scan.nextLine();
+    while(true){
+
+      if(response == 'Y'){
+        System.out.println("Enter name of enemy: ");
+        name = scan.nextLine();
+        System.out.println("Enter HP for this enemy: ");
+        hitP = scan.nextInt();
+        scan.nextLine();
+        addEntity(name, enemyInit, hitP, list);
+
+        break;
+      }
+      else if(response == 'N'){
+        name = "Enemy" + ENEMY_COUNT++;
+        System.out.println("Enter HP for this enemy: ");
+        hitP = scan.nextInt();
+        scan.nextLine();
+        addEntity(name, enemyInit, hitP, list); 
+
+        break;
+      }
+      else{
+        System.out.println("invalid input");
+      }
+    }
+  }
 
 
 /**  
@@ -88,38 +126,41 @@ public class Main{
       }
 
     }
-    while(true){
-      System.out.println("Will every enemy have their own HP? Y/N: ");
-      char response = scan.next().toUpperCase().charAt(0);
-      scan.nextLine();
-        if(response == 'Y'){
-          for(int i = 0; i < enemyCount; i++){
-            System.out.println("Enter HP for enemy " + (i + 1) + ": ");
+    if(enemyCount == 1){
+      nameEnemy(scan, list, enemyInit);
+    }
+    else{
+
+      while(true){
+        System.out.println("Will every enemy have their own HP? Y/N: ");
+        char response = scan.next().toUpperCase().charAt(0);
+        scan.nextLine();
+          if(response == 'Y'){
+            for(int i = 0; i < enemyCount; i++){
+              System.out.println("Enter HP for enemy " + (i + 1) + ": ");
+              hitP = scan.nextInt();
+              scan.nextLine();
+              String name = "Enemy" + ENEMY_COUNT++;
+              addEntity(name, enemyInit, hitP, list);
+            }
+            break;
+          }else if(response == 'N'){
+            System.out.println("Enter Hp for all enemies: ");
             hitP = scan.nextInt();
             scan.nextLine();
-            String name = "Enemy" + ENEMY_COUNT++;
-            addEntity(name, enemyInit, hitP, list);
+            for(int i = 0; i < enemyCount; i++){
+              String name = "Enemy" + ENEMY_COUNT++;
+              addEntity(name, enemyInit, hitP, list);  
+            }
+            break;
+            }
+          else{
+            System.out.println("Invalid input");
           }
-          break;
-        }else if(response == 'N'){
-          System.out.println("Enter Hp for all enemies: ");
-          hitP = scan.nextInt();
-          scan.nextLine();
-          for(int i = 0; i < enemyCount; i++){
-            String name = "Enemy" + ENEMY_COUNT++;
-            addEntity(name, enemyInit, hitP, list);  
-          }
-          break;
-          }
-        else{
-          System.out.println("Invalid input");
-        }
 
-        sortInit(list);
-        
-  
+      }
     }
-
+    sortInit(list);
 
   }
 
