@@ -9,7 +9,7 @@
 ```bash
 javac src/*.java
 java -cp src Main
-```bash
+```
 
 ## Usage
 
@@ -42,6 +42,7 @@ java -cp src Main
 
 ## Example
 
+
 ```text
 Enter number of players: 2
 Input name and initiative:
@@ -61,3 +62,12 @@ Enemy1        | init:  14 | HP:  30
 Enemy2        | init:  14 | HP:  30 
 Alice         | init:  15 
 Bob           | init:  12
+```
+
+## Technologies
+- Java
+- Object-Oriented Programming (OOP)
+- Command-line Interface (CLI)
+
+## License
+Open source, available under the MIT License.
