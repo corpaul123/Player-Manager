@@ -3,16 +3,28 @@ import java.util.*;
 public class Main{
 
 /** 
-* Entry Point: manage input, setup, and run the encounter loop. 
+* Entry Point: manages player amount, setup, and running the encounter loop. 
 **/
   public static void main(String[] args) {
     List<Entity> ents = new ArrayList<>();
     GameState game = new GameState();
-    System.out.println("---------------------------------------");
     Scanner scanner = new Scanner(System.in);
+    int entCount;
+
+    System.out.println("---------------------------------------");
+
+    while(true){
     System.out.print("Enter number of players: ");
-    int entCount = scanner.nextInt();
-    scanner.nextLine();
+
+      try{
+        entCount = Integer.parseInt(scanner.nextLine());
+        break;
+      }catch(NumberFormatException e){
+        System.out.println("Invalid input, please enter a valid integer.");
+
+      }
+    }
+
     ents = ManagePlayer.enterPlayerInfo(entCount, scanner, game);
 
     ManageEntity.checkEnemy(scanner, ents, game);

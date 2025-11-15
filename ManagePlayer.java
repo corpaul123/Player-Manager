@@ -25,23 +25,39 @@ public class ManagePlayer {
         List<Entity> ents = new ArrayList<>();
         int cont = entCount;
         while(cont > 0){
-            System.out.println("input name and initiative:" );
-            String name = scan.nextLine();
-            boolean exist = ents.stream().anyMatch(e -> e.getName().equalsIgnoreCase(name));
-            if(exist){
-            System.out.println("Player has already been entered, please enter a different one.");
-            continue;
+            String name = "";
+            int init = 0;
+            while(true){
+                System.out.println("Input player name:" );
+                String input = scan.nextLine();
+                boolean exist = ents.stream().anyMatch(e -> e.getName().equalsIgnoreCase(input));
+                if(exist){
+                    System.out.println("Player has already been entered, please enter a different one.");
+                    continue;
+                }
+                else{
+                    name = input;
+                    break;
+                }
             }
-            int init = scan.nextInt();
-            scan.nextLine();
-            if(init > 0 && init <= game.getMaxInit()){
+
+            while(true){
+                try{
+                    System.out.println("Input player initiative:" );
+                    init = Integer.parseInt(scan.nextLine());
+                    if(init > 0 && init <= game.getMaxInit()){
+                        break;
+                    }
+                    else{
+                        System.out.println("Invalid initiative, must be between 1 and 40");
+                        continue;
+                    }
+                }catch(NumberFormatException e){
+                    System.out.println("Invalid input, please enter valid integer.");
+                }
+            }
             addEntity(name, init, ents);
             cont--;
-            }
-            else{
-            System.out.println("Invalid initiative, must be between 0 and 40");
-            continue;
-            }
         }
         return ents;
 

@@ -39,7 +39,45 @@ public class ManageEntity {
         }
     }
 
+/**
+ * Evaluates what number to use to name enemies based on other enemies present in the list.
+ * @param list of entities to use for comparison of names
+ * @return number to be used to name new enemy
+ */
+    public static int enemyAutoName(List<Entity> list){
+        return list.stream()
+        .map(Entity::getName)
+        .filter(n -> n.startsWith("Enemy"))
+        .map(n-> Integer.parseInt(n.substring(5)))
+        .max(Integer::compare)
+        .orElse(0) + 1;
+    }
 
+/**
+ * Prompt user to enter enemy hit points. 
+ * @param scan Scanner instance for input
+ * @param list list list of entities to be updated
+ * @return enemy hit points 
+ */
+    public static int enemyHpManager(Scanner scan, List<Entity> list){
+        int hitPoints = 0;
+        while(true){
+            try{
+                System.out.println("Enter hit points for this enemy: ");
+                hitPoints = Integer.parseInt(scan.nextLine());
+                if(hitPoints > 0){
+                    break;
+                }
+
+            }catch(NumberFormatException e){
+                System.out.println("Invalid input, please enter valid integer.");
+            }
+
+        }
+
+
+        return hitPoints;
+    }
 
 /**
 * Prompt user to enter a unique name for the enemy and its HP.
@@ -51,33 +89,30 @@ public class ManageEntity {
     public static void nameEnemy(Scanner scan, List<Entity> list, int enemyInit, GameState game){
         int hitP;
         String name;
-        System.out.println("Would you like to name this enemy (Y/N)? ");
-        char response = scan.next().toUpperCase().charAt(0);
-        scan.nextLine();
         while(true){
+            System.out.println("Would you like to name this enemy (Y/N)? ");
+            char response = scan.next().toUpperCase().charAt(0);
+            scan.nextLine();
 
             if(response == 'Y'){
                 System.out.println("Enter name of enemy: ");
                 name = scan.nextLine();
-                System.out.println("Enter hit points for this enemy: ");
-                hitP = scan.nextInt();
-                scan.nextLine();
+                hitP = enemyHpManager(scan, list);
                 addEntity(name, enemyInit, hitP, list);
                 game.incrementEn();
-
                 break;
-            }
-            else if(response == 'N'){
-                game.incrementEn();
-                name = "Enemy" + game.getEn();
+            }else if(response == 'N'){
+                int numNext = enemyAutoName(list);
+                
+                name = "Enemy" + numNext;
                 System.out.println("Enter hit points for this enemy: ");
-                hitP = scan.nextInt();
+                hitP = enemyHpManager(scan, list);
                 scan.nextLine();
                 addEntity(name, enemyInit, hitP, list); 
+                game.incrementEn();
 
                 break;
-            }
-            else{
+            }else{
                 System.out.println("Invalid input, response must be Y or N.");
             }
         }
@@ -95,12 +130,10 @@ public class ManageEntity {
         int enemyInit, enemyCount, hitP;
 
         while(true){
-            System.out.println("add enemy amount and initiative (eg. 2, 14): ");
+            System.out.println("Add enemy amount and initiative (eg. 2, 14): ");
             String input = scan.nextLine();
 
             String[] parseInput = input.split("\\s+");
-
-
             if(parseInput.length != 2){
                 System.out.println("Invalid input, input must be two numbers: enemy count and initiative.");
                 continue;
@@ -109,9 +142,6 @@ public class ManageEntity {
             try{
                 enemyCount = Integer.parseInt(parseInput[0]);
                 enemyInit = Integer.parseInt(parseInput[1]);
-
-
-
                 if((enemyInit > game.getMaxInit() || enemyInit < 0) || (enemyCount <= 0 || enemyCount > 40)){
                     System.out.println("Invalid input, initiative or enemy count are not in valid range.");
                 }
@@ -133,22 +163,20 @@ public class ManageEntity {
                 scan.nextLine();
                 if(response == 'Y'){
                     for(int i = 0; i < enemyCount; i++){
-                        System.out.println("Enter hit points for enemy " + (i + 1) + ": ");
-                        hitP = scan.nextInt();
-                        scan.nextLine();
-                        game.incrementEn();
-                        String name = "Enemy" + game.getEn();
+                        hitP = enemyHpManager(scan, list);
+                        int numNext = enemyAutoName(list);
+                        String name = "Enemy" + numNext;
                         addEntity(name, enemyInit, hitP, list);
+                        game.incrementEn();
                     }
                     break;
                 }else if(response == 'N'){
                     System.out.println("Enter hit points for all enemies: ");
-                    hitP = scan.nextInt();
-                    scan.nextLine();
+                    hitP = enemyHpManager(scan, list);
                     for(int i = 0; i < enemyCount; i++){
-                        game.incrementEn();
                         String name = "Enemy" + game.getEn();
                         addEntity(name, enemyInit, hitP, list);  
+                        game.incrementEn();
                     }
                     break;
                 }else{
@@ -159,4 +187,5 @@ public class ManageEntity {
         }
         ManageEncounter.sortInit(list);
     }
+
 }
