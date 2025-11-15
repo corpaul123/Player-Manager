@@ -54,7 +54,7 @@ public class Main{
 
 
 /**
- * Prompt user whether enemies will be part of the encounter. 
+ * Prompt the user to specify whether enemies will be part of the encounter. 
  * @param scan Scanner instance for input
  * @param list list of entities to be updated
  */
@@ -70,7 +70,7 @@ public class Main{
         }else if(enc == 'N'){
           break;
         }else if(enc != 'Y' && enc != 'N'){
-          System.out.println("Invalid input");
+          System.out.println("Invalid input, response must be Y or N.");
         }
    
       }
@@ -79,7 +79,7 @@ public class Main{
 
 
 /**
- * Enter unique name of enemy and HP.
+ * Prompt user to enter a unique name for the enemy and its HP.
 * @param scan Scanner instance for input
 * @param list a list of initialized entities
 * @param int enemy initiative for sorting
@@ -112,7 +112,7 @@ public class Main{
         break;
       }
       else{
-        System.out.println("invalid input");
+        System.out.println("Invalid input, response must be Y or N.");
       }
     }
   }
@@ -134,7 +134,7 @@ public class Main{
       scan.nextLine();
 
       if((enemyInit > MAX_INIT || enemyInit < 0) || (enemyCount <= 0 || enemyCount > 40)){
-        System.out.println("Invalid input, please re-enter");
+        System.out.println("Invalid input, initiative or enemy count are not in valid range.");
 
       }
       else{
@@ -173,7 +173,7 @@ public class Main{
             break;
             }
           else{
-            System.out.println("Invalid input");
+            System.out.println("Invalid input, response must be Y or N.");
           }
 
       }
@@ -223,7 +223,7 @@ public class Main{
 /**
  * Sort the list in descending order.
  * @param list the list of entities to be sorted
- * @return sorted list of entities based on intitiative 
+ * @return sorted list of entities based on initiative 
  */ 
   public static List<Entity> sortInit(List<Entity> list){
     list.sort((e1, e2) -> Integer.compare(e2.getInit(), e1.getInit()));
