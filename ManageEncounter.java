@@ -74,37 +74,47 @@ public class ManageEncounter {
                     System.out.println("Ending Encounter");
                     count = 0;
                 }else if (response == 2) {
-                    System.out.println("Enter enemy and amount of damage");
-                    String enem = scan.nextLine();
-                    int damage = scan.nextInt();
-                    scan.nextLine();
-                    Optional<Entity> enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
-                    if(enemOpt.isPresent()){
-                        Entity enemy = enemOpt.get();
-                        enemy.takeDamage(damage);
+                    if(game.getEn() > 0){
+                        System.out.println("Enter enemy and amount of damage");
+                        String enem = scan.nextLine();
+                        int damage = scan.nextInt();
+                        scan.nextLine();
+                        Optional<Entity> enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
+                        if(enemOpt.isPresent()){
+                            Entity enemy = enemOpt.get();
+                            enemy.takeDamage(damage);
 
-                    if(enemy.getHP() <= 0){
-                        list.remove(enemy);
-                        System.out.println(enemy + " has been defeated");
-                    }
-                    printOrder(list);
-                
+                        if(enemy.getHP() <= 0){
+                            list.remove(enemy);
+                            System.out.println(enemy + " has been defeated");
+                        }
+                        printOrder(list);
+                    
+                        }else{
+                        System.out.println("Invalid enemy name");
+                        }
                     }else{
-                    System.out.println("Invalid enemy name");
+                        System.out.println("Unable to complete action, no enemies present.");
+                        printOrder(list);
                     }
                 }else if(response == 3){
-                    System.out.println("Enter enemy and amount of increased health");
-                    String enem = scan.nextLine();
-                    int health = scan.nextInt();
-                    scan.nextLine();
-                    Optional<Entity> enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
-                    if(enemOpt.isPresent()){
-                        Entity enemy = enemOpt.get();
-                        enemy.moreHealth(health);
-                        printOrder(list);
-                
+                    if(game.getEn() > 0){
+                        System.out.println("Enter enemy and amount of increased health");
+                        String enem = scan.nextLine();
+                        int health = scan.nextInt();
+                        scan.nextLine();
+                        Optional<Entity> enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
+                        if(enemOpt.isPresent()){
+                            Entity enemy = enemOpt.get();
+                            enemy.moreHealth(health);
+                            printOrder(list);
+                    
+                        }else{
+                            System.out.println("Invalid enemy name");
+                        }
                     }else{
-                        System.out.println("Invalid enemy name");
+                        System.out.println("Unable to complete action, no enemies present.");
+                        printOrder(list);
                     }
                 }else if(response == 4){
                     ManageEntity.addEnemy(scan, list, game);
