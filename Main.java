@@ -2,7 +2,9 @@ import java.util.*;
 
 public class Main{
 
-// Define static variables 
+/**
+ * Define static variables.
+ */ 
   static final int MAX_INIT = 40;
   static int ENEMY_COUNT = 1;
 
@@ -21,24 +23,41 @@ public class Main{
     checkEnemy(scanner, ents);
 
     sortInit(ents);
+    printOrder(ents);
     runEncounter(ents, scanner);
     scanner.close();
 
   }
 
 
-
+/**
+ * Add entity to the Entity list.
+ * @param name  name of the entity to be added
+ * @param initiative  the initiative of the entity being added
+ * @param list  the list entities to which entities will be added
+ */
   public static void addEntity(String name, int initiative, List<Entity> list){
     list.add(new Entity(name, initiative));
   }
 
+/**
+ * Add entity to the Entity list, including their hit points.
+ * @param name  name of the entity to be added
+ * @param initiative  the initiative of the entity being added
+ * @param hitP  the hit points of the entity being added
+ * @param list  the list entities to which entities will be added
+ */
   public static void addEntity(String name, int initiative, int hitP, List<Entity> list){
     list.add(new Entity(name, initiative, hitP));
   }
 
 
 
-// Prompt user whether enemies will be part of the encounter. 
+/**
+ * Prompt user whether enemies will be part of the encounter. 
+ * @param scan Scanner instance for input
+ * @param list list of entities to be updated
+ */
   public static void checkEnemy(Scanner scan, List<Entity> list){
 
       while(true){
@@ -60,12 +79,11 @@ public class Main{
 
 
 /**
- * Enter unique name of enemy and HP
+ * Enter unique name of enemy and HP.
 * @param scan Scanner instance for input
 * @param list a list of initialized entities
 * @param int enemy initiative for sorting
  */
-
   public static void nameEnemy(Scanner scan, List<Entity> list, int enemyInit){
     int hitP;
     String name;
@@ -166,12 +184,12 @@ public class Main{
 
 
 
-
-
-
-
-
-// Prompt user for player name and initiative.  
+/**
+ * Prompt user for player name and initiative. 
+ * @param entCount the number of players in the encounter
+ * @param scan Scanner instance for input
+ * @return list of the player entities with their information
+ */ 
   public static List<Entity> enterPlayerInfo(int entCount, Scanner scan){
     List<Entity> ents = new ArrayList<>();
     int cont = entCount;
@@ -202,25 +220,25 @@ public class Main{
 
 
 
-// Sort the list in descending order. 
+/**
+ * Sort the list in descending order.
+ * @param list the list of entities to be sorted
+ * @return sorted list of entities based on intitiative 
+ */ 
   public static List<Entity> sortInit(List<Entity> list){
     list.sort((e1, e2) -> Integer.compare(e2.getInit(), e1.getInit()));
 
     if(list.isEmpty()){
       return null;
     }
-
-    System.out.println("/-----------------Current Order--------------------/");
-    for (Entity entry : list){
-      System.out.println(entry.toString());
-    }
-
-
     return list;
 
   }
 
-// Print the current initiative order in a unified format.  
+/**
+ * Print the current initiative order in a unified format.
+ * @param list the list of initialized entities to be printed
+ */
   public static void printOrder(List<Entity> list){
     System.out.println("/-----------------Current Order--------------------/");
     for (Entity entry : list){
@@ -228,7 +246,10 @@ public class Main{
     }
   }
 
-// Rotate the initiative order to the current entity taking action.  
+/**
+ * Rotate the initiative order to the current entity taking action. 
+ * @param list list of entities to be rotated
+ */ 
   public static void sortRotate(List<Entity> list){
     
     if( list == null || list.isEmpty()){
@@ -258,8 +279,8 @@ public class Main{
     System.out.println("Actions: ");
     System.out.println("End encounter: 1");
     System.out.println("Remove enemy health: 2");
-    System.out.println("Increase enemy health: 4");
-    System.out.println("Add more enemies: 3");
+    System.out.println("Increase enemy health: 3");
+    System.out.println("Add more enemies: 4");
     System.out.println("No action: 0");
     int response = scan.nextInt();
     scan.nextLine();
@@ -290,11 +311,6 @@ public class Main{
             }
         }
         else if(response == 3){
-          addEnemy(scan, list);
-
-          printOrder(list);
-        }
-        else if(response == 4){
           System.out.println("Enter enemy and amount of increased health");
           String enem = scan.nextLine();
           int health = scan.nextInt();
@@ -310,12 +326,17 @@ public class Main{
             }
 
         }
+        else if(response == 4){
+          addEnemy(scan, list);
+
+          printOrder(list);
+        }
         else if(response == 0){
           System.out.println("No Action");
           sortRotate(list);
         }
         else{
-          System.out.println("Invalid response, must be 1, 2, or 0");
+          System.out.println("Invalid response, must be 1, 2, 3, 4 or 0");
         }
       
 
