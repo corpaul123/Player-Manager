@@ -104,6 +104,7 @@ public class ManageEncounter {
                         int health = scan.nextInt();
                         scan.nextLine();
                         Optional<Entity> enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
+
                         if(enemOpt.isPresent()){
                             Entity enemy = enemOpt.get();
                             enemy.moreHealth(health);
