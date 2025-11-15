@@ -33,10 +33,8 @@ public class Entity {
     }
 
     public void moreHealth(int health){
-        if(this.hitP < maxHP){
-            if((this.hitP + health) <= maxHP){
-                this.hitP += health;
-            }
+        if(hitP != null){
+            hitP = Math.min(hitP + health, maxHP);
         }
 
         
