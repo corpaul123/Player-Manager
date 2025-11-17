@@ -26,9 +26,11 @@ public class Entity {
     }
     
     public void takeDamage(int damage){
-        this.hitP -= damage;
-        if(this.hitP <= 0){
-            this.hitP = 0;
+        if(hitP!=null){
+            this.hitP -= damage;
+            if(this.hitP <= 0){
+                this.hitP = 0;
+            }
         }
     }
 
@@ -36,7 +38,6 @@ public class Entity {
         if(hitP != null){
             hitP = Math.min(hitP + health, maxHP);
         }
-
         
     }
 
