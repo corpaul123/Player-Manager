@@ -41,8 +41,142 @@ public class ManageEncounter {
         }
         Entity first = list.remove(0);
         list.add(first);
+    }
 
-        printOrder(list);
+/**
+ *  Display the encounter options.
+ */
+    public static void displayEncounter(){
+        System.out.println("Actions: ");
+        System.out.println("End encounter: 1");
+        System.out.println("Remove enemy health: 2");
+        System.out.println("Increase enemy health: 3");
+        System.out.println("Add more enemies: 4");
+        System.out.println("No action: 0");
+    }
+
+/**
+ * Prompt the user to enter the name of the desired enemy, and verifies that the enemy exists.
+ * @param list a list of initialized entities
+ * @param scan Scanner instance for input
+ * @param game game instance for initiative and enemy count
+ * @return name of enemy for further processes
+ */
+    public static Optional<Entity> enemyHelper(List<Entity> list, Scanner scan, GameState game){
+
+        Optional<Entity> enemOpt;
+        do{
+
+
+            System.out.println("Enter enemy name:");
+            String enem = scan.nextLine().trim();
+            enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
+            if(!enemOpt.isPresent()){
+                System.out.println("Enemy was not found. Please try again.");
+            }
+        }while(!enemOpt.isPresent());
+        return enemOpt;
+    }
+
+/**
+ * Prompt the user to enter amount of hit points to be removed from an enemy.
+ * @param scan Scanner instance for input
+ * @return amount of hit points to be removed (damaged)
+ */
+    public static int damageHelper(Scanner scan){
+        int damage = 0;
+        while(true){
+            try{
+                System.out.println("Enter amount of damage: ");
+                damage = Integer.parseInt(scan.nextLine());
+                if(damage > 0){
+                    break;
+                }
+
+            }catch(NumberFormatException e){
+                System.out.println("Invalid input, please enter valid integer.");
+            }
+
+        }
+        return damage;
+
+    }
+/**
+ * Prompt user to enter amount of hit points to heal an enemy.
+ * @param scan Scanner instance for input
+ * @return amount of hit points to be added (healed)
+ */
+    public static int healthHelper(Scanner scan){
+        int health = 0;
+        while(true){
+            try{
+                System.out.println("Enter hit points healed: ");
+                health = Integer.parseInt(scan.nextLine());
+                if(health > 0){
+                    break;
+                }
+
+            }catch(NumberFormatException e){
+                System.out.println("Invalid input, please enter valid integer.");
+            }
+
+        }
+
+        return health;
+    }
+
+/**
+ * Prompt user to enter amount of hit points to hurt an enemy.
+ * @param list a list of initialized entities
+ * @param scan Scanner instance for input
+ * @param game game instance for initiative and enemy count
+ */
+    public static void hurtEnemy(List<Entity> list, Scanner scan, GameState game){
+        if(game.getEn() > 0){
+            Optional<Entity> enemOpt = enemyHelper(list, scan, game);
+            int damage = damageHelper(scan);
+            if(enemOpt.isPresent()){
+                Entity enemy = enemOpt.get();
+                enemy.takeDamage(damage);
+
+            if(enemy.getHP() <= 0){
+                list.remove(enemy);
+                System.out.println(enemy + " has been defeated");
+                game.decrementEn();
+            }
+        
+            }else{
+            System.out.println("Invalid enemy name");
+            }
+        }else{
+            System.out.println("Unable to complete action, no enemies present.");
+        }
+    }
+
+/**
+ * 
+ * @param list a list of initialized entities
+ * @param scan Scanner instance for input
+ * @param game game instance for initiative and enemy count
+ */
+    public static void healEnemy(List<Entity> list, Scanner scan, GameState game){
+        if(game.getEn() > 0){
+            Optional<Entity> enemOpt = enemyHelper(list, scan, game);
+
+            int health = healthHelper(scan);
+
+            if(enemOpt.isPresent()){
+                Entity enemy = enemOpt.get();
+                enemy.moreHealth(health);
+        
+            }else{
+                System.out.println("Invalid enemy name");
+            }
+        }else{
+            System.out.println("Unable to complete action, no enemies present.");
+            printOrder(list);
+        }
+
     }
 
 /** 
@@ -58,76 +192,27 @@ public class ManageEncounter {
 **/
     public static void runEncounter(List<Entity> list, Scanner scan, GameState game){
 
-        int count = 1;
-        while(count == 1){
-            System.out.println("Actions: ");
-            System.out.println("End encounter: 1");
-            System.out.println("Remove enemy health: 2");
-            System.out.println("Increase enemy health: 3");
-            System.out.println("Add more enemies: 4");
-            System.out.println("No action: 0");
-            int response = scan.nextInt();
-            scan.nextLine();
-
+        while(true){
+            displayEncounter();
+            int response = Integer.parseInt(scan.nextLine());
             if(response == 1 || response == 2 || response == 3 || response == 4 || response == 0 ){
                 if(response == 1){
                     System.out.println("Ending Encounter");
-                    count = 0;
+                    break;
                 }else if (response == 2) {
-                    if(game.getEn() > 0){
-                        System.out.println("Enter enemy and amount of damage");
-                        String enem = scan.nextLine();
-                        int damage = scan.nextInt();
-                        scan.nextLine();
-                        Optional<Entity> enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
-                        if(enemOpt.isPresent()){
-                            Entity enemy = enemOpt.get();
-                            enemy.takeDamage(damage);
-
-                        if(enemy.getHP() <= 0){
-                            list.remove(enemy);
-                            System.out.println(enemy + " has been defeated");
-                        }
-                        printOrder(list);
-                    
-                        }else{
-                        System.out.println("Invalid enemy name");
-                        }
-                    }else{
-                        System.out.println("Unable to complete action, no enemies present.");
-                        printOrder(list);
-                    }
+                    hurtEnemy(list, scan, game);
                 }else if(response == 3){
-                    if(game.getEn() > 0){
-                        System.out.println("Enter enemy and amount of increased health");
-                        String enem = scan.nextLine();
-                        int health = scan.nextInt();
-                        scan.nextLine();
-                        Optional<Entity> enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
-
-                        if(enemOpt.isPresent()){
-                            Entity enemy = enemOpt.get();
-                            enemy.moreHealth(health);
-                            printOrder(list);
-                    
-                        }else{
-                            System.out.println("Invalid enemy name");
-                        }
-                    }else{
-                        System.out.println("Unable to complete action, no enemies present.");
-                        printOrder(list);
-                    }
+                    healEnemy(list,scan, game);
                 }else if(response == 4){
                     ManageEntity.addEnemy(scan, list, game);
-                    printOrder(list);
                 }else if(response == 0){
                     System.out.println("No Action");
                     sortRotate(list);
-                    printOrder(list);
                 }
             }else{
                 System.out.println("Invalid response, must be 1, 2, 3, 4 or 0");
             }
+            printOrder(list);
             
         }
     }
