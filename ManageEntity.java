@@ -27,15 +27,16 @@ public class ManageEntity {
             System.out.println("Are there enemies in this encounter? Y/N ");
             char enc = scan.next().toUpperCase().charAt(0);
             scan.nextLine();
-            if(enc == 'Y'){
-                addEnemy(scan, list, game);
-                break;
-            }else if(enc == 'N'){
-                break;
-            }else if(enc != 'Y' && enc != 'N'){
-                System.out.println("Invalid input, response must be Y or N.");
+            switch(enc){
+                case 'Y':
+                    addEnemy(scan, list, game);
+                    return;
+                case 'N':
+                    return;
+                default:
+                    System.out.println("Invalid input, response must be Y or N.");
             }
-   
+    
         }
     }
 
@@ -93,27 +94,27 @@ public class ManageEntity {
             System.out.println("Would you like to name this enemy (Y/N)? ");
             char response = scan.next().toUpperCase().charAt(0);
             scan.nextLine();
+            switch(response){
+                case 'Y':
+                    System.out.println("Enter name of enemy: ");
+                    name = scan.nextLine();
+                    hitP = enemyHpManager(scan, list);
+                    addEntity(name, enemyInit, hitP, list);
+                    game.incrementEn();
+                    return;
+                case 'N':
+                    int numNext = enemyAutoName(list);
+                    
+                    name = "Enemy" + numNext;
+                    System.out.println("Enter hit points for this enemy: ");
+                    hitP = enemyHpManager(scan, list);
+                    scan.nextLine();
+                    addEntity(name, enemyInit, hitP, list); 
+                    game.incrementEn();
 
-            if(response == 'Y'){
-                System.out.println("Enter name of enemy: ");
-                name = scan.nextLine();
-                hitP = enemyHpManager(scan, list);
-                addEntity(name, enemyInit, hitP, list);
-                game.incrementEn();
-                break;
-            }else if(response == 'N'){
-                int numNext = enemyAutoName(list);
-                
-                name = "Enemy" + numNext;
-                System.out.println("Enter hit points for this enemy: ");
-                hitP = enemyHpManager(scan, list);
-                scan.nextLine();
-                addEntity(name, enemyInit, hitP, list); 
-                game.incrementEn();
-
-                break;
-            }else{
-                System.out.println("Invalid input, response must be Y or N.");
+                    return;
+                default:
+                    System.out.println("Invalid input, response must be Y or N.");
             }
         }
     }
@@ -161,26 +162,27 @@ public class ManageEntity {
                 System.out.println("Will every enemy have their own HP? Y/N: ");
                 char response = scan.next().toUpperCase().charAt(0);
                 scan.nextLine();
-                if(response == 'Y'){
-                    for(int i = 0; i < enemyCount; i++){
+                switch(response){
+                    case 'Y':
+                        for(int i = 0; i < enemyCount; i++){
+                            hitP = enemyHpManager(scan, list);
+                            int numNext = enemyAutoName(list);
+                            String name = "Enemy" + numNext;
+                            addEntity(name, enemyInit, hitP, list);
+                            game.incrementEn();
+                        }
+                        return;
+                    case 'N':
+                        System.out.println("Enter hit points for all enemies: ");
                         hitP = enemyHpManager(scan, list);
-                        int numNext = enemyAutoName(list);
-                        String name = "Enemy" + numNext;
-                        addEntity(name, enemyInit, hitP, list);
-                        game.incrementEn();
-                    }
-                    break;
-                }else if(response == 'N'){
-                    System.out.println("Enter hit points for all enemies: ");
-                    hitP = enemyHpManager(scan, list);
-                    for(int i = 0; i < enemyCount; i++){
-                        String name = "Enemy" + game.getEn();
-                        addEntity(name, enemyInit, hitP, list);  
-                        game.incrementEn();
-                    }
-                    break;
-                }else{
-                    System.out.println("Invalid input, response must be Y or N.");
+                        for(int i = 0; i < enemyCount; i++){
+                            String name = "Enemy" + game.getEn();
+                            addEntity(name, enemyInit, hitP, list);  
+                            game.incrementEn();
+                        }
+                        return;
+                    default:
+                        System.out.println("Invalid input, response must be Y or N.");
                 }
 
             }
