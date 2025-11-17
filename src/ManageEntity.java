@@ -58,13 +58,14 @@ public class ManageEntity {
  * Prompt user to enter enemy hit points. 
  * @param scan Scanner instance for input
  * @param list list list of entities to be updated
+ * @param name name of enemy being given hit points
  * @return enemy hit points 
  */
-    public static int enemyHpManager(Scanner scan, List<Entity> list){
+    public static int enemyHpManager(Scanner scan, List<Entity> list, String name){
         int hitPoints = 0;
         while(true){
             try{
-                System.out.println("Enter hit points for this enemy: ");
+                System.out.println("Enter maximum hit points for " + name + ": ");
                 hitPoints = Integer.parseInt(scan.nextLine());
                 if(hitPoints > 0){
                     break;
@@ -98,7 +99,7 @@ public class ManageEntity {
                 case 'Y':
                     System.out.println("Enter name of enemy: ");
                     name = scan.nextLine();
-                    hitP = enemyHpManager(scan, list);
+                    hitP = enemyHpManager(scan, list, name);
                     addEntity(name, enemyInit, hitP, list);
                     game.incrementEn();
                     return;
@@ -106,9 +107,7 @@ public class ManageEntity {
                     int numNext = enemyAutoName(list);
                     
                     name = "Enemy" + numNext;
-                    System.out.println("Enter hit points for this enemy: ");
-                    hitP = enemyHpManager(scan, list);
-                    scan.nextLine();
+                    hitP = enemyHpManager(scan, list, name);
                     addEntity(name, enemyInit, hitP, list); 
                     game.incrementEn();
 
@@ -118,6 +117,7 @@ public class ManageEntity {
             }
         }
     }
+
 
 
 /**  
@@ -164,17 +164,19 @@ public class ManageEntity {
                 scan.nextLine();
                 switch(response){
                     case 'Y':
+                        System.out.println("Entering hit points individually: ");
                         for(int i = 0; i < enemyCount; i++){
-                            hitP = enemyHpManager(scan, list);
                             int numNext = enemyAutoName(list);
                             String name = "Enemy" + numNext;
+                            hitP = enemyHpManager(scan, list, name);
                             addEntity(name, enemyInit, hitP, list);
                             game.incrementEn();
                         }
+                        
                         return;
                     case 'N':
-                        System.out.println("Enter hit points for all enemies: ");
-                        hitP = enemyHpManager(scan, list);
+                        System.out.println("Entering hit points for all current enemies: ");
+                        hitP = enemyHpManager(scan, list, "all enemies");
                         for(int i = 0; i < enemyCount; i++){
                             String name = "Enemy" + game.getEn();
                             addEntity(name, enemyInit, hitP, list);  
@@ -187,7 +189,6 @@ public class ManageEntity {
 
             }
         }
-        ManageEncounter.sortInit(list);
     }
 
 }

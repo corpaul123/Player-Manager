@@ -13,6 +13,31 @@ public class ManagePlayer {
     public static void addEntity(String name, int initiative, List<Entity> list){
         list.add(new Entity(name, initiative));
     }
+    
+/**
+ * Prompt user to enter the number of players participating in encounter.
+ * @param scan Scanner instance for input
+ * @return amount of players present
+ */
+    public static int playAmount(Scanner scan){
+        int count = 0;
+        while(true){
+            System.out.print("Enter number of players: ");
+            try{
+                count = Integer.parseInt(scan.nextLine());
+                if(count > 0){
+                    break;
+                }
+                else{
+                    System.out.println("Invalid input, there must be at least one player for an encounter.");
+                }
+            }catch(NumberFormatException e){
+                System.out.println("Invalid input, please enter a valid integer.");
+
+            }
+        }
+        return count;
+    }
 
 /**
 * Prompt user for player name and initiative. 

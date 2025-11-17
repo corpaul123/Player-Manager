@@ -1,5 +1,5 @@
 ## Player-Manager
-**TTRPG initiative and health management system** built in Java. Allowing GameMasters to run tabletop encounters with variable player count and enemy count.
+**TTRPG initiative and health management system** A java tool for managing initiative and health in tabletop RPG encounters.
 
 ## Requirements
 - Java 8 or higher
@@ -22,8 +22,8 @@ java -cp src Main
         1. enter enemy amount and their initiative
         2. If there is only one enemy, you will be asked whether to give it a custom name
         3. Choose whether enemies have individually specified health range or not
-            - No-enter health once.
-            - Yes-enter health for each enemy
+            - **No**-enter health once.
+            - **Yes**-enter health for each enemy
 4. Encounter is run, choose action.
     - 1\. end the encounter
     - 2\. (if enemies are present) choose an enemy and hit points to be removed

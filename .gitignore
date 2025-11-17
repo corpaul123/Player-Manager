@@ -1,0 +1,18 @@
+# VS Code settings
+.vscode/
+
+# Logs
+*.log
+
+# Compiled Java classes
+*.class
+bin/
+out/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Optional: IntelliJ if someone uses it locally
+.idea/
+*.iml

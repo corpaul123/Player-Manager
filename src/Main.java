@@ -13,17 +13,7 @@ public class Main{
 
     System.out.println("---------------------------------------");
 
-    while(true){
-    System.out.print("Enter number of players: ");
-
-      try{
-        entCount = Integer.parseInt(scanner.nextLine());
-        break;
-      }catch(NumberFormatException e){
-        System.out.println("Invalid input, please enter a valid integer.");
-
-      }
-    }
+    entCount = ManagePlayer.playAmount(scanner);
 
     ents = ManagePlayer.enterPlayerInfo(entCount, scanner, game);
 
