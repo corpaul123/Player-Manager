@@ -23,6 +23,7 @@ public class ManageEncounter {
 * @param list the list of initialized entities to be printed
 */
     public static void printOrder(List<Entity> list){
+        System.out.println(" ");
         System.out.println("/-----------------Current Order--------------------/");
         for (Entity entry : list){
             System.out.println(entry.toString());
@@ -174,7 +175,6 @@ public class ManageEncounter {
             }
         }else{
             System.out.println("Unable to complete action, no enemies present.");
-            printOrder(list);
         }
 
     }
@@ -195,23 +195,28 @@ public class ManageEncounter {
         while(true){
             displayEncounter();
             int response = Integer.parseInt(scan.nextLine());
-            if(response == 1 || response == 2 || response == 3 || response == 4 || response == 0 ){
-                if(response == 1){
+            switch(response){
+                case 1:
                     System.out.println("Ending Encounter");
-                    break;
-                }else if (response == 2) {
+                    return;
+                case 2:
                     hurtEnemy(list, scan, game);
-                }else if(response == 3){
+                    break;
+                case 3:
                     healEnemy(list,scan, game);
-                }else if(response == 4){
+                    break;
+                case 4:
                     ManageEntity.addEnemy(scan, list, game);
-                }else if(response == 0){
+                    break;
+                case 0:
                     System.out.println("No Action");
                     sortRotate(list);
-                }
-            }else{
-                System.out.println("Invalid response, must be 1, 2, 3, 4 or 0");
+                    break;
+            
+                default:
+                    System.out.println("Invalid response, must be 1, 2, 3, 4 or 0");
             }
+            
             printOrder(list);
             
         }
