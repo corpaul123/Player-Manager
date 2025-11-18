@@ -3,6 +3,7 @@ public class Entity {
     private String name;
     private Integer hitP;
     private Integer maxHP;
+    private boolean isEnemy;
 
     public Entity(String name, int initiative){
         this.name = name;
@@ -10,11 +11,12 @@ public class Entity {
         this.hitP = null;
     }
 
-    public Entity(String name, int initiative, int hitPoints){
+    public Entity(String name, int initiative, int hitPoints, boolean isEnemy){
         this.name = name;
         this.init = initiative;
         this.hitP = hitPoints;
         this.maxHP = hitPoints;
+        this.isEnemy = isEnemy;
     }
 
     public int getInit(){
@@ -23,6 +25,10 @@ public class Entity {
 
     public void setHP(int hitPoints){
         this.hitP = hitPoints;
+    }
+
+    public boolean isEnemy(){
+        return isEnemy;
     }
     
     public void takeDamage(int damage){

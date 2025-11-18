@@ -75,6 +75,10 @@ public class ManageEncounter {
             if(!enemOpt.isPresent()){
                 System.out.println("Enemy was not found. Please try again.");
             }
+            else if(!enemOpt.get().isEnemy()){
+                System.out.println("This is not an enemy, please enter an enemy name.");
+                enemOpt = Optional.empty();
+            }
         }while(!enemOpt.isPresent());
         return enemOpt;
     }
@@ -194,29 +198,33 @@ public class ManageEncounter {
 
         while(true){
             displayEncounter();
-            int response = Integer.parseInt(scan.nextLine());
-            switch(response){
-                case 1:
-                    System.out.println("Ending Encounter");
-                    return;
-                case 2:
-                    hurtEnemy(list, scan, game);
-                    break;
-                case 3:
-                    healEnemy(list,scan, game);
-                    break;
-                case 4:
-                    ManageEntity.addEnemy(scan, list, game);
-                    break;
-                case 0:
-                    System.out.println("No Action");
-                    sortRotate(list);
-                    break;
-            
-                default:
-                    System.out.println("Invalid response, must be 1, 2, 3, 4 or 0");
+            try{
+                int response = Integer.parseInt(scan.nextLine());
+                switch(response){
+                    case 1:
+                        System.out.println("Ending Encounter");
+                        return;
+                    case 2:
+                        hurtEnemy(list, scan, game);
+                        break;
+                    case 3:
+                        healEnemy(list,scan, game);
+                        break;
+                    case 4:
+                        ManageEntity.addEnemy(scan, list, game);
+                        break;
+                    case 0:
+                        System.out.println("No Action");
+                        sortRotate(list);
+                        break;
+                
+                    default:
+                        System.out.println("Invalid response, must be 1, 2, 3, 4 or 0");
+                }
+            }catch(NumberFormatException e){
+                System.out.println("Invalid input, please enter valid integers.");
             }
-            
+
             printOrder(list);
             
         }
