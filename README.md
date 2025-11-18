@@ -2,7 +2,7 @@
 **TTRPG initiative and health management system** A java tool for managing initiative and health in tabletop RPG encounters.
 
 ## Requirements
-- Java 8 or higher
+- Java 11
 
 ## How to Compile and Run
 
@@ -46,25 +46,28 @@ java -cp src Main
 
 ```text
 Enter number of players: 2
-input name and initiative:
-Mark
-12
-input name and initiative:
-Beth
+Input player name:
+Bob
+Input player initiative:
 15
+Input player name:
+Alice
+Input player initiative:
+16
 Are there enemies in this encounter? Y/N 
 Y
-add enemy amount and initiative (eg. 2, 14): 
-2 16
+Add enemy amount and initiative (eg. 2, 14): 
+2 14
 Will every enemy have their own HP? Y/N: 
 N
-Enter Hp for all enemies: 
+Enter maximum hit points for all enemies: 
 20
+ 
 /-----------------Current Order--------------------/
-Enemy1        | init:  16 | HP:  20 
-Enemy2        | init:  16 | HP:  20 
-Beth          | init:  15 
-Mark          | init:  12 
+Alice         | init:  16 
+Bob           | init:  15 
+Enemy1        | init:  14 | HP:  20 
+Enemy2        | init:  14 | HP:  20 
 Actions: 
 End encounter: 1
 Remove enemy health: 2
