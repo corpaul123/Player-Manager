@@ -11,7 +11,7 @@ public class ManageEntity {
 * @param list  the list entities to which entities will be added
 */
     public static void addEntity(String name, int initiative, int hitP, List<Entity> list){
-        list.add(new Entity(name, initiative, hitP));
+        list.add(new Entity(name, initiative, hitP, true));
     }
 
 
@@ -175,10 +175,9 @@ public class ManageEntity {
                         
                         return;
                     case 'N':
-                        System.out.println("Entering hit points for all current enemies: ");
                         hitP = enemyHpManager(scan, list, "all enemies");
                         for(int i = 0; i < enemyCount; i++){
-                            String name = "Enemy" + game.getEn();
+                            String name = "Enemy" + enemyAutoName(list);
                             addEntity(name, enemyInit, hitP, list);  
                             game.incrementEn();
                         }
