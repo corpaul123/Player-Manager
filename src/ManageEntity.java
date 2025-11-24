@@ -59,14 +59,19 @@ public class ManageEntity {
  * @param scan Scanner instance for input
  * @param list list list of entities to be updated
  * @param name name of enemy being given hit points
- * @return enemy hit points 
+ * @return enemy hit points, or -1 to cancel operation
  */
     public static int enemyHpManager(Scanner scan, List<Entity> list, String name){
         int hitPoints = 0;
         while(true){
             try{
-                System.out.println("Enter maximum hit points for " + name + ": ");
-                hitPoints = Integer.parseInt(scan.nextLine());
+                System.out.println("Enter maximum hit points for " + name + ", 0 to cancel: ");
+                String input = scan.nextLine();
+                if(input.equals("0")){
+                    System.out.println("Cancelling.");
+                    return -1;
+                }
+                hitPoints = Integer.parseInt(input);
                 if(hitPoints > 0){
                     break;
                 }
@@ -92,7 +97,7 @@ public class ManageEntity {
         int hitP;
         String name;
         while(true){
-            System.out.println("Would you like to name this enemy (Y/N)? ");
+            System.out.println("Would you like to name this enemy (Y/N)? 0 to cancel ");
             char response = scan.next().toUpperCase().charAt(0);
             scan.nextLine();
             switch(response){
@@ -111,6 +116,9 @@ public class ManageEntity {
                     addEntity(name, enemyInit, hitP, list); 
                     game.incrementEn();
 
+                    return;
+                case '0':
+                    System.out.print("Cancelling.");
                     return;
                 default:
                     System.out.println("Invalid input, response must be Y or N.");
@@ -131,9 +139,13 @@ public class ManageEntity {
         int enemyInit, enemyCount, hitP;
 
         while(true){
-            System.out.println("Add enemy amount and initiative (eg. 2, 14): ");
-            String input = scan.nextLine();
+            System.out.println("Add enemy amount and initiative (eg. 2, 14) 0 to cancel: ");
+            String input = scan.nextLine().trim();
 
+            if(input.equals("0")){
+                System.out.println("Cancelling.");
+                return;
+            }
             String[] parseInput = input.split("\\s+");
             if(parseInput.length != 2){
                 System.out.println("Invalid input, input must be two numbers: enemy count and initiative.");
@@ -169,6 +181,10 @@ public class ManageEntity {
                             int numNext = enemyAutoName(list);
                             String name = "Enemy" + numNext;
                             hitP = enemyHpManager(scan, list, name);
+                            if(hitP == -1){
+                                System.out.println("Cancelling enemy");
+                                return;
+                            }
                             addEntity(name, enemyInit, hitP, list);
                             game.incrementEn();
                         }
@@ -176,6 +192,11 @@ public class ManageEntity {
                         return;
                     case 'N':
                         hitP = enemyHpManager(scan, list, "all enemies");
+
+                        if(hitP == -1){
+                            System.out.println("Cancelling enemy");
+                            return;                           
+                        }
                         for(int i = 0; i < enemyCount; i++){
                             String name = "Enemy" + enemyAutoName(list);
                             addEntity(name, enemyInit, hitP, list);  
