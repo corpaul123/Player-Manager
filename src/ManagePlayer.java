@@ -25,15 +25,17 @@ public class ManagePlayer {
             System.out.print("Enter number of players: ");
             try{
                 count = Integer.parseInt(scan.nextLine());
-                if(count > 0){
+                if(count > 0 && count <= 10){
                     break;
                 }
-                else{
+                else if(count <= 0){
                     System.out.println("Invalid input, there must be at least one player for an encounter.");
+                }
+                else if(count > 10){
+                    System.out.println("Invalid input, too many players have been entered for an encounter.");
                 }
             }catch(NumberFormatException e){
                 System.out.println("Invalid input, please enter a valid integer.");
-
             }
         }
         return count;

@@ -86,14 +86,21 @@ public class ManageEncounter {
 /**
  * Prompt the user to enter amount of hit points to be removed from an enemy.
  * @param scan Scanner instance for input
- * @return amount of hit points to be removed (damaged)
+ * @return amount of hit points to be removed (damaged), or -1 to cancel
  */
     public static int damageHelper(Scanner scan){
         int damage = 0;
         while(true){
             try{
-                System.out.println("Enter amount of damage: ");
-                damage = Integer.parseInt(scan.nextLine());
+                System.out.println("Enter amount of damage, 0 to cancel: ");
+
+                String input = scan.nextLine();
+                if(input == "0"){
+                    System.out.println("cancelling.");
+                    return -1;
+                }
+
+                damage = Integer.parseInt(input);
                 if(damage > 0){
                     break;
                 }
@@ -109,14 +116,20 @@ public class ManageEncounter {
 /**
  * Prompt user to enter amount of hit points to heal an enemy.
  * @param scan Scanner instance for input
- * @return amount of hit points to be added (healed)
+ * @return amount of hit points to be added (healed), or -1 to cancel
  */
     public static int healthHelper(Scanner scan){
         int health = 0;
         while(true){
             try{
-                System.out.println("Enter hit points healed: ");
-                health = Integer.parseInt(scan.nextLine());
+                System.out.println("Enter hit points healed, 0 to cancel: ");
+                String input = scan.nextLine().trim();
+
+                if(input.equals("0")){
+                    System.out.print("Cancelling.");
+                    return -1;
+                }
+                health = Integer.parseInt(input);
                 if(health > 0){
                     break;
                 }
