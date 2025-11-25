@@ -18,8 +18,7 @@ public class Main{
     ents = ManagePlayer.enterPlayerInfo(entCount, scanner, game);
 
     ManageEntity.checkEnemy(scanner, ents, game);
-    ManageEncounter.sortInit(ents);
-    ManageEncounter.printOrder(ents);
+    ManageEncounter.printOrder(ents, game);
     ManageEncounter.runEncounter(ents, scanner, game);
 
     scanner.close();

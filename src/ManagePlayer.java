@@ -13,6 +13,20 @@ public class ManagePlayer {
     public static void addEntity(String name, int initiative, List<Entity> list){
         list.add(new Entity(name, initiative));
     }
+
+/**
+ * Adds a player into the list of entities.
+ * @param name name of player being added
+ * @param initiative initiative of player being added
+ * @param list list of entities to be updated
+ */
+    public static void playerInitAdd(String name, int initiative, List<Entity> list){
+        int i = 0;
+        while(i < list.size() && list.get(i).getInit() > initiative){
+            i++;
+        }
+        list.add(i, new Entity(name, initiative));
+    }
     
 /**
  * Prompt user to enter the number of players participating in encounter.
@@ -83,7 +97,7 @@ public class ManagePlayer {
                     System.out.println("Invalid input, please enter valid integer.");
                 }
             }
-            addEntity(name, init, ents);
+            playerInitAdd(name, init, ents);
             cont--;
         }
         return ents;

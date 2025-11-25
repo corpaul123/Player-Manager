@@ -4,29 +4,24 @@ import java.util.Scanner;
 
 public class ManageEncounter {
 
-/**
-* Sort the list in descending order.
-* @param list the list of entities to be sorted
-* @return sorted list of entities based on initiative 
-*/ 
-    public static List<Entity> sortInit(List<Entity> list){
-        list.sort((e1, e2) -> Integer.compare(e2.getInit(), e1.getInit()));
-
-        if(list.isEmpty()){
-            return null;
-        }
-        return list;
-    }
 
 /**
 * Print the current initiative order in a unified format.
 * @param list the list of initialized entities to be printed
 */
-    public static void printOrder(List<Entity> list){
+    public static void printOrder(List<Entity> list, GameState game){
         System.out.println(" ");
         System.out.println("/-----------------Current Order--------------------/");
-        for (Entity entry : list){
-            System.out.println(entry.toString());
+        int currentTurn = game.getTurnIn();
+        int size = list.size();
+
+        if(size == 0){
+            return;
+        }
+
+        for(int i = 0; i < size; i++){
+            Entity e = list.get((currentTurn + i) % size);
+            System.out.println(e.toString());
         }
     }
 
@@ -34,14 +29,16 @@ public class ManageEncounter {
 * Rotate the initiative order to the current entity taking action. 
 * @param list list of entities to be rotated
 */ 
-    public static void sortRotate(List<Entity> list){
+    public static void sortRotate(List<Entity> list, GameState game){
         
         if( list == null || list.isEmpty()){
             System.out.println("no initiative");
             return;
         }
-        Entity first = list.remove(0);
-        list.add(first);
+
+        int turn = game.getTurnIn();
+        turn = (turn + 1) % list.size();
+        game.setTurnIn(turn);
     }
 
 /**
@@ -224,11 +221,11 @@ public class ManageEncounter {
                         healEnemy(list,scan, game);
                         break;
                     case 4:
-                        ManageEntity.addEnemy(scan, list, game);
+                        ManageEntity.addEnemy(scan, list, game, true);
                         break;
                     case 0:
                         System.out.println("No Action");
-                        sortRotate(list);
+                        sortRotate(list, game);
                         break;
                 
                     default:
@@ -238,7 +235,7 @@ public class ManageEncounter {
                 System.out.println("Invalid input, please enter valid integers.");
             }
 
-            printOrder(list);
+            printOrder(list, game);
             
         }
     }

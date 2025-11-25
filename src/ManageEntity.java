@@ -3,17 +3,32 @@ import java.util.Scanner;
 
 public class ManageEntity {
 
-/**
-* Add entity to the Entity list, including their hit points.
-* @param name  name of the entity to be added
-* @param initiative  the initiative of the entity being added
-* @param hitP  the hit points of the entity being added
-* @param list  the list entities to which entities will be added
-*/
-    public static void addEntity(String name, int initiative, int hitP, List<Entity> list){
-        list.add(new Entity(name, initiative, hitP, true));
-    }
 
+
+/**
+ * Inserts an enemy into the encounter list.
+ * How the enemy is inserted changes based on whether on encounter is happening or not.
+ * @param name name of the enemy being added
+ * @param initiative initiative of the enemy being added
+ * @param hitP the starting hit points of the enemy being added
+ * @param list
+ * @param game
+ * @return
+ */
+    public static void initAddEnc(String name, int initiative, int hitP, 
+        List<Entity> list, GameState game, boolean midEn){
+        int i = 0;
+        while(i < list.size() && list.get(i).getInit() > initiative){
+            i++;
+        }
+        list.add(i, new Entity(name, initiative, hitP, true));
+
+        if(midEn && i <= game.getTurnIn()){
+            game.setTurnIn(game.getTurnIn() + 1);
+        }
+
+
+    }
 
 /**
  * Prompt the user to specify whether enemies will be part of the encounter. 
@@ -29,7 +44,7 @@ public class ManageEntity {
             scan.nextLine();
             switch(enc){
                 case 'Y':
-                    addEnemy(scan, list, game);
+                    addEnemy(scan, list, game, false);
                     return;
                 case 'N':
                     return;
@@ -93,7 +108,7 @@ public class ManageEntity {
 * @param int enemy initiative for sorting
 * @param game game instance for initiative and enemy count
 */
-    public static void nameEnemy(Scanner scan, List<Entity> list, int enemyInit, GameState game){
+    public static void nameEnemy(Scanner scan, List<Entity> list, int enemyInit, GameState game, boolean mid){
         int hitP;
         String name;
         while(true){
@@ -105,7 +120,7 @@ public class ManageEntity {
                     System.out.println("Enter name of enemy: ");
                     name = scan.nextLine();
                     hitP = enemyHpManager(scan, list, name);
-                    addEntity(name, enemyInit, hitP, list);
+                    initAddEnc(name, enemyInit, hitP, list, game, mid);
                     game.incrementEn();
                     return;
                 case 'N':
@@ -113,7 +128,7 @@ public class ManageEntity {
                     
                     name = "Enemy" + numNext;
                     hitP = enemyHpManager(scan, list, name);
-                    addEntity(name, enemyInit, hitP, list); 
+                    initAddEnc(name, enemyInit, hitP, list, game, mid); 
                     game.incrementEn();
 
                     return;
@@ -135,7 +150,7 @@ public class ManageEntity {
 * @param list a list of initialized entities
 * @param game game instance for initiative and enemy count
 */
-    public static void addEnemy(Scanner scan, List<Entity> list, GameState game){
+    public static void addEnemy(Scanner scan, List<Entity> list, GameState game, boolean mid){
         int enemyInit, enemyCount, hitP;
 
         while(true){
@@ -146,7 +161,7 @@ public class ManageEntity {
                 System.out.println("Cancelling.");
                 return;
             }
-            String[] parseInput = input.split("\\s+");
+            String[] parseInput = input.split("[,\\s]+");
             if(parseInput.length != 2){
                 System.out.println("Invalid input, input must be two numbers: enemy count and initiative.");
                 continue;
@@ -155,10 +170,12 @@ public class ManageEntity {
             try{
                 enemyCount = Integer.parseInt(parseInput[0]);
                 enemyInit = Integer.parseInt(parseInput[1]);
-                if((enemyInit > game.getMaxInit() || enemyInit < 0) || (enemyCount <= 0 || enemyCount > 40)){
-                    System.out.println("Invalid input, initiative or enemy count are not in valid range.");
-                }
-                else{
+                if((enemyInit > game.getMaxInit() || enemyInit < 0)){
+                    System.out.println("Invalid input, initiative is not in valid range.");
+                }else if( (enemyCount <= 0 || enemyCount > 40)){
+                    System.out.println("Invalid input, enemy count is not in valid range.");
+                
+                }else{
                     break;
                 }
             }catch(NumberFormatException e){
@@ -167,7 +184,7 @@ public class ManageEntity {
 
         }
         if(enemyCount == 1){
-            nameEnemy(scan, list, enemyInit, game);
+            nameEnemy(scan, list, enemyInit, game, mid);
         }else{
 
             while(true){
@@ -185,7 +202,7 @@ public class ManageEntity {
                                 System.out.println("Cancelling enemy");
                                 return;
                             }
-                            addEntity(name, enemyInit, hitP, list);
+                            initAddEnc(name, enemyInit, hitP, list, game, mid);
                             game.incrementEn();
                         }
                         
@@ -199,7 +216,7 @@ public class ManageEntity {
                         }
                         for(int i = 0; i < enemyCount; i++){
                             String name = "Enemy" + enemyAutoName(list);
-                            addEntity(name, enemyInit, hitP, list);  
+                            initAddEnc(name, enemyInit, hitP, list, game, mid);  
                             game.incrementEn();
                         }
                         return;
