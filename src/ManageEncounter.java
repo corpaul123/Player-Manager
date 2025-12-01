@@ -169,7 +169,7 @@ public class ManageEncounter {
     }
 
 /**
- * 
+ * Prompt userto enter amount of hit points to heal an enemy.
  * @param list a list of initialized entities
  * @param scan Scanner instance for input
  * @param game game instance for initiative and enemy count
