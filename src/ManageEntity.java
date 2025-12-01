@@ -123,7 +123,7 @@ public class ManageEntity {
     }
 
 /**
- * 
+ * Handles the logic for automatically naming enemies and incrementing the number of enemies.
  * @param scan Scanner instance for input
  * @param list a list of initialized entities
  * @param enemyInit initiative of current enemy
