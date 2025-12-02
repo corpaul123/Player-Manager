@@ -2,9 +2,12 @@ import java.util.*;
 
 public class Main{
 
-/** 
-* Entry Point: manages player amount, setup, and running the encounter loop. 
-**/
+/**
+ * Entry point of the program. 
+ * Initializes the game and starts the encounter setup.
+ *
+ * @param args command-line arguments (not used).
+ */
   public static void main(String[] args) {
     List<Entity> ents = new ArrayList<>();
     GameState game = new GameState();

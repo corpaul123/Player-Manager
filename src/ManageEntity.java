@@ -7,7 +7,9 @@ public class ManageEntity {
 
 /**
  * Inserts an enemy into the encounter list.
+ * 
  * How the enemy is inserted changes based on whether on encounter is happening or not.
+ * 
  * @param name name of the enemy being added
  * @param initiative initiative of the enemy being added
  * @param hitP the starting hit points of the enemy being added
@@ -31,11 +33,13 @@ public class ManageEntity {
 
 /**
  * Prompt the user to specify whether enemies will be part of the encounter. 
- * Call addEnemy to insert enemy into the list.
- * Continue to the encounter without enemies.
- * @param scan Scanner instance for input
- * @param list list of entities to be updated
- * @param game instance for initiative and enemy count
+ * 
+ * If enemies are added, calls addEnemy to insert them into the list.
+ * If no enemies are added, the encounter continues with players only.
+ * 
+ * @param scan Scanner instance for input.
+ * @param list List of entities to be updated.
+ * @param game The instance for initiative and enemy count.
  */
     public static void checkEnemy(Scanner scan, List<Entity> list, GameState game){
 
@@ -58,8 +62,9 @@ public class ManageEntity {
 
 /**
  * Evaluates what number to use to name enemies based on other enemies present in the list.
- * @param list of entities to use for comparison of names
- * @return number to be used to name new enemy
+ * 
+ * @param list List of entities to use for comparison of names.
+ * @return Number to be used to name new enemy.
  */
     public static int enemyAutoName(List<Entity> list){
         return list.stream()
@@ -72,10 +77,11 @@ public class ManageEntity {
 
 /**
  * Prompt user to enter enemy hit points. 
- * @param scan Scanner instance for input
- * @param list list of entities to be updated
- * @param name name of enemy being given hit points
- * @return enemy hit points, or -1 to cancel operation
+ * 
+ * @param scan Scanner instance for input.
+ * @param list List of entities to be updated.
+ * @param name Name of enemy being given hit points.
+ * @return Enemy hit points, or -1 to cancel operation.
  */
     public static int enemyHpManager(Scanner scan, List<Entity> list, String name){
         int hitPoints = 0;
@@ -105,11 +111,12 @@ public class ManageEntity {
 
 /**
  * Prompt user to enter a name manually.
- * @param scan Scanner instance for input
- * @param list list of entities to be updated
- * @param enemyInit initiative of current enemy
- * @param game game instance for initiative and enemy count
- * @param mid boolean to verify whether an encounter is in progress
+ * 
+ * @param scan Scanner instance for input.
+ * @param list list of entities to be updated.
+ * @param enemyInit initiative of current enemy.
+ * @param game game instance for initiative and enemy count.
+ * @param mid The boolean to verify whether an encounter is in progress.
  */
     public static void manualName(Scanner scan, List<Entity> list, int enemyInit, GameState game, boolean mid){
         int hitP;
@@ -124,11 +131,12 @@ public class ManageEntity {
 
 /**
  * Handles the logic for automatically naming enemies and incrementing the number of enemies.
- * @param scan Scanner instance for input
- * @param list a list of initialized entities
- * @param enemyInit initiative of current enemy
- * @param game game instance for initiative and enemy count
- * @param mid boolean to verify whether an encounter is in progress
+ * 
+ * @param scan Scanner instance for input.
+ * @param list A list of initialized entities.
+ * @param enemyInit The initiative of current enemy.
+ * @param game Game instance for initiative and enemy count.
+ * @param mid The boolean to verify whether an encounter is in progress.
  */
     public static void handleAutoNaming(Scanner scan, List<Entity> list, int enemyInit, GameState game, boolean mid){
         String name;
@@ -142,10 +150,11 @@ public class ManageEntity {
 
 /**
 * Prompt user to enter a unique name for the enemy and its HP.
-* @param scan Scanner instance for input
-* @param list a list of initialized entities
-* @param int enemy initiative for sorting
-* @param game game instance for initiative and enemy count
+*
+* @param scan Scanner instance for input.
+* @param list A list of initialized entities.
+* @param enemyInt The enemy initiative for sorting.
+* @param game The game instance for initiative and enemy count.
 */
     public static void nameEnemy(Scanner scan, List<Entity> list, int enemyInit, GameState game, boolean mid){
         while(true){
@@ -175,10 +184,13 @@ public class ManageEntity {
 
 /**  
 * Prompt user to input enemy amount and initiative.
+*
 * Prompt user to define whether enemies will have individually-defined hit points or all use the same max hit points. 
-* @param scan Scanner instance for input
-* @param list a list of initialized entities
-* @param game game instance for initiative and enemy count
+*
+* @param scan Scanner instance for input.
+* @param list a list of initialized entities.
+* @param game game instance for initiative and enemy count.
+* @param mid The boolean to verify whether an encounter is in progress.
 */
     public static void addEnemy(Scanner scan, List<Entity> list, GameState game, boolean mid){
         int enemyInit, enemyCount, hitP;

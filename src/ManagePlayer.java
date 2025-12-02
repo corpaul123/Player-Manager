@@ -6,9 +6,10 @@ public class ManagePlayer {
 
 /**
 * Add entity to the Entity list.
-* @param name  name of the entity to be added
-* @param initiative  the initiative of the entity being added
-* @param list  the list entities to which entities will be added
+*
+* @param name The name of the entity to be added.
+* @param initiative The initiative of the entity being added.
+* @param list The list entities to which entities will be added.
 */
     public static void addEntity(String name, int initiative, List<Entity> list){
         list.add(new Entity(name, initiative));
@@ -16,9 +17,10 @@ public class ManagePlayer {
 
 /**
  * Adds a player into the list of entities.
- * @param name name of player being added
- * @param initiative initiative of player being added
- * @param list list of entities to be updated
+ * 
+ * @param name The name of player being added.
+ * @param initiative The initiative of player being added.
+ * @param list The list of entities to be updated.
  */
     public static void playerInitAdd(String name, int initiative, List<Entity> list){
         int i = 0;
@@ -30,8 +32,9 @@ public class ManagePlayer {
     
 /**
  * Prompt user to enter the number of players participating in encounter.
- * @param scan Scanner instance for input
- * @return amount of players present
+ * 
+ * @param scan Scanner instance for input.
+ * @return The amount of players present.
  */
     public static int playAmount(Scanner scan){
         int count = 0;
@@ -57,10 +60,11 @@ public class ManagePlayer {
 
 /**
 * Prompt user for player name and initiative. 
-* @param entCount the number of players in the encounter
-* @param scan Scanner instance for input
-* @param game instance for initiative and enemy count
-* @return list of the player entities with their information
+*
+* @param entCount The number of players in the encounter.
+* @param scan Scanner instance for input.
+* @param game The instance for initiative and enemy count.
+* @return The list of the player entities with their information.
 */ 
     public static List<Entity> enterPlayerInfo(int entCount, Scanner scan, GameState game){
         List<Entity> ents = new ArrayList<>();
