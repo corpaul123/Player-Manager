@@ -7,7 +7,8 @@ public class ManageEncounter {
 
 /**
 * Print the current initiative order in a unified format.
-* @param list the list of initialized entities to be printed
+*
+* @param list The list of initialized entities to be printed.
 */
     public static void printOrder(List<Entity> list, GameState game){
         System.out.println(" ");
@@ -26,8 +27,10 @@ public class ManageEncounter {
     }
 
 /**
-* Rotate the initiative order to the current entity taking action. 
-* @param list list of entities to be rotated
+* Rotate the initiative order to the current entity taking action.
+*
+* @param list List of entities to be rotated.
+* @param game Game instance for initiative and enemy count.
 */ 
     public static void sortRotate(List<Entity> list, GameState game){
         
@@ -55,17 +58,16 @@ public class ManageEncounter {
 
 /**
  * Prompt the user to enter the name of the desired enemy, and verifies that the enemy exists.
- * @param list a list of initialized entities
- * @param scan Scanner instance for input
- * @param game game instance for initiative and enemy count
- * @return name of enemy for further processes
+ * 
+ * @param list A list of initialized entities.
+ * @param scan Scanner instance for input.
+ * @param game Game instance for initiative and enemy count.
+ * @return Name of enemy for further processes.
  */
     public static Optional<Entity> enemyHelper(List<Entity> list, Scanner scan, GameState game){
 
         Optional<Entity> enemOpt;
         do{
-
-
             System.out.println("Enter enemy name:");
             String enem = scan.nextLine().trim();
             enemOpt = list.stream().filter(e -> e.getName().equalsIgnoreCase(enem)).findFirst();
@@ -82,8 +84,9 @@ public class ManageEncounter {
 
 /**
  * Prompt the user to enter amount of hit points to be removed from an enemy.
- * @param scan Scanner instance for input
- * @return amount of hit points to be removed (damaged), or -1 to cancel
+ * 
+ * @param scan Scanner instance for input.
+ * @return Amount of hit points to be removed (damaged), or -1 to cancel.
  */
     public static int damageHelper(Scanner scan){
         int damage = 0;
@@ -92,7 +95,7 @@ public class ManageEncounter {
                 System.out.println("Enter amount of damage, 0 to cancel: ");
 
                 String input = scan.nextLine();
-                if(input == "0"){
+                if("0".equals(input)){
                     System.out.println("cancelling.");
                     return -1;
                 }
@@ -112,8 +115,9 @@ public class ManageEncounter {
     }
 /**
  * Prompt user to enter amount of hit points to heal an enemy.
- * @param scan Scanner instance for input
- * @return amount of hit points to be added (healed), or -1 to cancel
+ * 
+ * @param scan Scanner instance for input.
+ * @return Amount of hit points to be added (healed), or -1 to cancel.
  */
     public static int healthHelper(Scanner scan){
         int health = 0;
@@ -142,9 +146,10 @@ public class ManageEncounter {
 
 /**
  * Prompt user to enter amount of hit points to hurt an enemy.
- * @param list a list of initialized entities
+ * 
+ * @param list A list of initialized entities
  * @param scan Scanner instance for input
- * @param game game instance for initiative and enemy count
+ * @param game Game instance for initiative and enemy count
  */
     public static void hurtEnemy(List<Entity> list, Scanner scan, GameState game){
         if(game.getEn() > 0){
@@ -169,10 +174,11 @@ public class ManageEncounter {
     }
 
 /**
+ * Prompt user to enter amount of hit points to heal an enemy.
  * 
- * @param list a list of initialized entities
- * @param scan Scanner instance for input
- * @param game game instance for initiative and enemy count
+ * @param list A list of initialized entities.
+ * @param scan Scanner instance for input.
+ * @param game Game instance for initiative and enemy count.
  */
     public static void healEnemy(List<Entity> list, Scanner scan, GameState game){
         if(game.getEn() > 0){
@@ -193,17 +199,21 @@ public class ManageEncounter {
 
     }
 
-/** 
-* Allow user to define operations during each round.
-* User is able to end the encounter manually, allowing encounters to continue or end based on more dynamic factors.
-* User can remove health from a specific enemy, which will remove enemy from encounter when they are defeated.
-* User can add more enemies to encounter, allowing encounters to be more dynamic.
-* User can add more health to enemies, allowing them to heal.
-* User can continue encounter without action. 
-* @param list a list of initialized entities
-* @param scan Scanner instance for input
-* @param game game instance for initiative and enemy count
-**/
+/**
+ * Allows the user to define operations during each round.
+ *
+ * During each round, the user can:
+ * - End the encounter manually.
+ * - Remove health from a specific enemy, automatically removing them if defeated.
+ * - Add more enemies to the encounter for a dynamic challenge.
+ * - Add health to enemies to allow healing.
+ * - Continue the encounter without taking any action.
+ *
+ * @param list A list of initialized entities.
+ * @param scan Scanner instance for input.
+ * @param game Game instance for initiative and enemy count.
+ */
+
     public static void runEncounter(List<Entity> list, Scanner scan, GameState game){
 
         while(true){

@@ -7,13 +7,14 @@ public class ManageEntity {
 
 /**
  * Inserts an enemy into the encounter list.
+ * 
  * How the enemy is inserted changes based on whether on encounter is happening or not.
+ * 
  * @param name name of the enemy being added
  * @param initiative initiative of the enemy being added
  * @param hitP the starting hit points of the enemy being added
- * @param list
- * @param game
- * @return
+ * @param list list of entities to be updated
+ * @param game instance for initiative and enemy count
  */
     public static void initAddEnc(String name, int initiative, int hitP, 
         List<Entity> list, GameState game, boolean midEn){
@@ -32,9 +33,13 @@ public class ManageEntity {
 
 /**
  * Prompt the user to specify whether enemies will be part of the encounter. 
- * @param scan Scanner instance for input
- * @param list list of entities to be updated
- * @param game instance for initiative and enemy count
+ * 
+ * If enemies are added, calls addEnemy to insert them into the list.
+ * If no enemies are added, the encounter continues with players only.
+ * 
+ * @param scan Scanner instance for input.
+ * @param list List of entities to be updated.
+ * @param game The instance for initiative and enemy count.
  */
     public static void checkEnemy(Scanner scan, List<Entity> list, GameState game){
 
@@ -57,8 +62,9 @@ public class ManageEntity {
 
 /**
  * Evaluates what number to use to name enemies based on other enemies present in the list.
- * @param list of entities to use for comparison of names
- * @return number to be used to name new enemy
+ * 
+ * @param list List of entities to use for comparison of names.
+ * @return Number to be used to name new enemy.
  */
     public static int enemyAutoName(List<Entity> list){
         return list.stream()
@@ -71,10 +77,11 @@ public class ManageEntity {
 
 /**
  * Prompt user to enter enemy hit points. 
- * @param scan Scanner instance for input
- * @param list list list of entities to be updated
- * @param name name of enemy being given hit points
- * @return enemy hit points, or -1 to cancel operation
+ * 
+ * @param scan Scanner instance for input.
+ * @param list List of entities to be updated.
+ * @param name Name of enemy being given hit points.
+ * @return Enemy hit points, or -1 to cancel operation.
  */
     public static int enemyHpManager(Scanner scan, List<Entity> list, String name){
         int hitPoints = 0;
@@ -101,36 +108,65 @@ public class ManageEntity {
         return hitPoints;
     }
 
+
 /**
-* Prompt user to enter a unique name for the enemy and its HP.
-* @param scan Scanner instance for input
-* @param list a list of initialized entities
-* @param int enemy initiative for sorting
-* @param game game instance for initiative and enemy count
-*/
-    public static void nameEnemy(Scanner scan, List<Entity> list, int enemyInit, GameState game, boolean mid){
+ * Prompt user to enter a name manually.
+ * 
+ * @param scan Scanner instance for input.
+ * @param list list of entities to be updated.
+ * @param enemyInit initiative of current enemy.
+ * @param game game instance for initiative and enemy count.
+ * @param mid The boolean to verify whether an encounter is in progress.
+ */
+    public static void manualName(Scanner scan, List<Entity> list, int enemyInit, GameState game, boolean mid){
         int hitP;
         String name;
+        System.out.println("Enter name of enemy: ");
+        name = scan.nextLine();
+        hitP = enemyHpManager(scan, list, name);
+        initAddEnc(name, enemyInit, hitP, list, game, mid);
+        game.incrementEn();
+
+    }
+
+/**
+ * Handles the logic for automatically naming enemies and incrementing the number of enemies.
+ * 
+ * @param scan Scanner instance for input.
+ * @param list A list of initialized entities.
+ * @param enemyInit The initiative of current enemy.
+ * @param game Game instance for initiative and enemy count.
+ * @param mid The boolean to verify whether an encounter is in progress.
+ */
+    public static void handleAutoNaming(Scanner scan, List<Entity> list, int enemyInit, GameState game, boolean mid){
+        String name;
+        int hitP;
+        int numNext = enemyAutoName(list);
+        name = "Enemy" + numNext;
+        hitP = enemyHpManager(scan, list, name);
+        initAddEnc(name, enemyInit, hitP, list, game, mid); 
+        game.incrementEn();
+    }
+
+/**
+* Prompt user to enter a unique name for the enemy and its HP.
+*
+* @param scan Scanner instance for input.
+* @param list A list of initialized entities.
+* @param enemyInt The enemy initiative for sorting.
+* @param game The game instance for initiative and enemy count.
+*/
+    public static void nameEnemy(Scanner scan, List<Entity> list, int enemyInit, GameState game, boolean mid){
         while(true){
             System.out.println("Would you like to name this enemy (Y/N)? 0 to cancel ");
             char response = scan.next().toUpperCase().charAt(0);
             scan.nextLine();
             switch(response){
                 case 'Y':
-                    System.out.println("Enter name of enemy: ");
-                    name = scan.nextLine();
-                    hitP = enemyHpManager(scan, list, name);
-                    initAddEnc(name, enemyInit, hitP, list, game, mid);
-                    game.incrementEn();
+                    manualName(scan, list, enemyInit, game, mid);
                     return;
                 case 'N':
-                    int numNext = enemyAutoName(list);
-                    
-                    name = "Enemy" + numNext;
-                    hitP = enemyHpManager(scan, list, name);
-                    initAddEnc(name, enemyInit, hitP, list, game, mid); 
-                    game.incrementEn();
-
+                    handleAutoNaming(scan, list, enemyInit, game, mid);
                     return;
                 case '0':
                     System.out.print("Cancelling.");
@@ -143,12 +179,18 @@ public class ManageEntity {
 
 
 
+    
+
+
 /**  
 * Prompt user to input enemy amount and initiative.
+*
 * Prompt user to define whether enemies will have individually-defined hit points or all use the same max hit points. 
-* @param scan Scanner instance for input
-* @param list a list of initialized entities
-* @param game game instance for initiative and enemy count
+*
+* @param scan Scanner instance for input.
+* @param list a list of initialized entities.
+* @param game game instance for initiative and enemy count.
+* @param mid The boolean to verify whether an encounter is in progress.
 */
     public static void addEnemy(Scanner scan, List<Entity> list, GameState game, boolean mid){
         int enemyInit, enemyCount, hitP;
@@ -172,7 +214,7 @@ public class ManageEntity {
                 enemyInit = Integer.parseInt(parseInput[1]);
                 if((enemyInit > game.getMaxInit() || enemyInit < 0)){
                     System.out.println("Invalid input, initiative is not in valid range.");
-                }else if( (enemyCount <= 0 || enemyCount > 40)){
+                }else if( (enemyCount <= 0 || enemyCount > 20)){
                     System.out.println("Invalid input, enemy count is not in valid range.");
                 
                 }else{
