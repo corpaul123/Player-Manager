@@ -1,3 +1,5 @@
+package src;
+
 public class Entity {
     private int init;
     private String name;
