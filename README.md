@@ -7,9 +7,16 @@
 ## How to Compile and Run
 
 ```bash
-javac src/*.java
-java -cp src Main
+javac -d out -cp "lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar" src/*.java test/*.java
+java -cp "out:lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar" Mai
 ```
+
+## How to Run Tests
+
+```bash
+java -cp "out:lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar" org.junit.runner.JUnitCore Tests
+```
+
 
 ## Usage Overview
 

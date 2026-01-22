@@ -1,4 +1,3 @@
-package src;
 
 public class Entity {
     private int init;

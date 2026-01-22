@@ -1,5 +1,5 @@
 
-package src;
+
 public class GameState {
     
     private int MAX_INIT = 40;
