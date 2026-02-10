@@ -39,4 +39,26 @@ public class Tests {
 
         assertEquals(expectedSize, actualSize);
     }
+
+    @Test
+    public void testEnemyCancel(){
+        List<Entity> list = new ArrayList<>();
+        GameState game = new GameState();
+        ManagePlayer.playerInitAdd("Boris", 14, list);
+        ManagePlayer.playerInitAdd("Orion", 15, list);
+
+        String testInput = "Y\n"+
+        "2, 14\n" +
+        "0\n";
+        Scanner scan = new Scanner(
+            new ByteArrayInputStream(testInput.getBytes())
+        );
+
+        ManageEntity.checkEnemy(scan, list, game);
+
+        int expectedSize = 2;
+        int actualSize = list.size();
+
+        assertEquals(expectedSize, actualSize);
+    }
 }
