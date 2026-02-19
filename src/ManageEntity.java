@@ -231,7 +231,7 @@ public class ManageEntity {
         }else{
 
             while(true){
-                System.out.println("Will every enemy have their own HP? Y/N: ");
+                System.out.println("Will every enemy have their own HP (Y/N)? 0 to cancel: ");
                 char response = scan.next().toUpperCase().charAt(0);
                 scan.nextLine();
                 switch(response){
@@ -262,6 +262,9 @@ public class ManageEntity {
                             initAddEnc(name, enemyInit, hitP, list, game, mid);  
                             game.incrementEn();
                         }
+                        return;
+                    case '0':
+                        System.out.print("Cancelling.");
                         return;
                     default:
                         System.out.println("Invalid input, response must be Y or N.");
