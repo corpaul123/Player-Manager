@@ -61,4 +61,23 @@ public class Tests {
 
         assertEquals(expectedSize, actualSize);
     }
+
+    @Test
+    public void testPlayerAmountScan(){
+        List<Entity> list = new ArrayList<>();
+        GameState game = new GameState();
+
+        String testInput = "Y\n"+
+        "2\n";
+        Scanner scan = new Scanner(
+            new ByteArrayInputStream(testInput.getBytes())
+        );
+
+        
+
+        int actual = ManagePlayer.playAmount(scan);
+        int expected = 2;
+        assertEquals(expected, actual);
+
+    }
 }
