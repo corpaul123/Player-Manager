@@ -1,5 +1,5 @@
 ## Player-Manager
-**TTRPG initiative and health management system** A java tool for managing initiative and health in tabletop RPG encounters.
+**TTRPG initiative and health management system** A Java command-line tool for managing initiative order and hit points in tabletop RPG encounters.
 
 ## Requirements
 - Java 11+
@@ -8,7 +8,7 @@
 
 ```bash
 javac -d out -cp "lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar" src/*.java test/*.java
-java -cp "out:lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar" Mai
+java -cp "out:lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar" Main
 ```
 
 ## How to Run Tests
@@ -28,10 +28,11 @@ java -cp "out:lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar" org.junit.runner.J
     - **No** - start encounter
     - **Yes**,
         1. enter enemy amount and their initiative, or press "0" to cancel.
-        2. If there is only one enemy, you will be asked whether to give it a custom name.
+        2. If there is only one enemy, you will be asked whether to give it a custom name, or press "0" to cancel.
         3. Choose whether enemies have individually specified maximum HP.
             - **No**-enter HP once.
             - **Yes**-enter HP for each enemy.
+            - **0**-Cancel.
 4. Encounter is run, choose action.
     - 1\. end the encounter
     - 2\. (if enemies are present) choose an enemy and hit points to be removed
@@ -56,27 +57,27 @@ java -cp "out:lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar" org.junit.runner.J
 ---------------------------------------
 Enter number of players: 2
 Input player name:
-Alice
+Fred
 Input player initiative:
-11
+14
 Input player name:
-Bob
+Gord
 Input player initiative:
-15
+12
 Are there enemies in this encounter? Y/N 
 Y
 Add enemy amount and initiative (eg. 2, 14) 0 to cancel: 
-2 14
-Will every enemy have their own HP? Y/N: 
+2, 13
+Will every enemy have their own HP (Y/N)? 0 to cancel: 
 N
 Enter maximum hit points for all enemies, 0 to cancel: 
-20
+25
  
 /-----------------Current Order--------------------/
-Bob           | init:  15 
-Enemy2        | init:  14 | HP:  20 
-Enemy1        | init:  14 | HP:  20 
-Alice         | init:  11 
+Fred          | init:  14 
+Enemy2        | init:  13 | HP:  25 
+Enemy1        | init:  13 | HP:  25 
+Gord          | init:  12 
 Actions: 
 End encounter: 1
 Remove enemy health: 2
